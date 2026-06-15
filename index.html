@@ -453,7 +453,7 @@ async function findUserRow(email){
 async function saveToSheet(){
   await ensureSheetHeader();
   const row=await findUserRow(currentUser.email);
-  const data=[currentUser.email,currentUser.name,currentAvatarSrc||'',champion||'',JSON.stringify(picks)];
+  const data=[currentUser.email,currentUser.name,String(currentAvatarIdx!==null?currentAvatarIdx:''),champion||'',JSON.stringify(picks)];
   if(row>0){
     await sheetsUpdate(SHEET_NAME+'!A'+row+':E'+row,[data]);
   } else {
