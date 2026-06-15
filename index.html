@@ -771,7 +771,7 @@ function buildChampions(){
 }
 
 function setPick(key,side,val){if(!picks[key]) picks[key]={};picks[key][side]=val===''?null:parseInt(val);}
-function fillInputs(){Object.entries(picks).forEach(([key,val])=>{const h=document.getElementById(key+'_h');const a=document.getElementById(key+'_a');if(h&&val.h!==null&&val.h!==undefined) h.value=val.h;if(a&&val.a!==null&&val.a!==undefined) a.value=val.a;});buildGroups();}
+function fillInputs(){Object.entries(picks).forEach(([key,val])=>{const h=document.getElementById(key+'_h');const a=document.getElementById(key+'_a');if(h&&val.h!==null&&val.h!==undefined) h.value=val.h;if(a&&val.a!==null&&val.a!==undefined) a.value=val.a;});}
 function fillChampion(){document.querySelectorAll('.champ-btn').forEach(b=>b.classList.toggle('selected',b.textContent===champion));}
 
 function showTab(t){
