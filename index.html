@@ -1,159 +1,165 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>⚽ Quiniela Mundial 2026</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-  :root {
-    --green: #166534;
-    --green-light: #dcfce7;
-    --green-mid: #16a34a;
-    --gold: #b45309;
-    --gold-light: #fef3c7;
-    --pitch: #14532d;
-    --white: #ffffff;
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-400: #9ca3af;
-    --gray-600: #4b5563;
-    --gray-800: #1f2937;
-    --radius: 10px;
-    --radius-lg: 16px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; }
+:root{
+  --pitch:#14532d;--green:#166534;--green-mid:#16a34a;--green-light:#dcfce7;
+  --red:#991b1b;--red-light:#fee2e2;--gold:#b45309;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-800:#1f2937;
+  --radius:10px;--radius-lg:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;}
 
-  .site-header {
-    background: var(--pitch);
-    color: white;
-    padding: 0 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .site-header .logo { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-  .user-info { display: flex; align-items: center; gap: 10px; font-size: 13px; }
-  .avatar { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); object-fit: cover; }
-  .btn-logout { background: rgba(255,255,255,0.15); border: none; color: white; padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-  .btn-logout:hover { background: rgba(255,255,255,0.25); }
+/* HEADER */
+.site-header{background:var(--pitch);color:white;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
+.logo{font-size:16px;font-weight:600;}
+.user-info{display:flex;align-items:center;gap:10px;}
+.avatar{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.3);object-fit:cover;}
+.btn-sm{background:rgba(255,255,255,.15);border:none;color:white;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;}
+.btn-sm:hover{background:rgba(255,255,255,.25);}
 
-  #login-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - 56px);
-    padding: 2rem;
-    text-align: center;
-  }
-  .login-card {
-    background: white;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--gray-200);
-    padding: 2.5rem 2rem;
-    max-width: 380px;
-    width: 100%;
-  }
-  .login-card .ball { font-size: 52px; margin-bottom: 1rem; }
-  .login-card h1 { font-size: 22px; font-weight: 700; color: var(--pitch); margin-bottom: 6px; }
-  .login-card p { font-size: 14px; color: var(--gray-600); margin-bottom: 1.75rem; line-height: 1.6; }
-  #g_id_signin { display: flex; justify-content: center; }
+/* LOGIN */
+#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 56px);padding:2rem;}
+.login-card{background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:2.5rem 2rem;max-width:380px;width:100%;text-align:center;}
+.login-card .ball{font-size:52px;margin-bottom:1rem;}
+.login-card h1{font-size:22px;font-weight:700;color:var(--pitch);margin-bottom:6px;}
+.login-card p{font-size:14px;color:var(--gray-600);margin-bottom:1.75rem;line-height:1.6;}
+#g_id_signin{display:flex;justify-content:center;}
 
-  #app { display: none; max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 5rem; }
+/* APP */
+#app{display:none;max-width:960px;margin:0 auto;padding:1.5rem 1rem 5rem;}
 
-  .tabs { display: flex; gap: 2px; background: var(--gray-200); border-radius: 10px; padding: 3px; margin-bottom: 1.5rem; }
-  .tab { flex: 1; padding: 8px 4px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: none; border-radius: 8px; color: var(--gray-600); transition: all 0.15s; }
-  .tab.active { background: white; color: var(--pitch); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+/* TABS */
+.tabs{display:flex;gap:2px;background:var(--gray-200);border-radius:10px;padding:3px;margin-bottom:1.5rem;}
+.tab{flex:1;padding:8px 4px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;border-radius:8px;color:var(--gray-600);}
+.tab.active{background:white;color:var(--pitch);box-shadow:0 1px 3px rgba(0,0,0,.1);}
+.section{display:none;}
+.section.active{display:block;}
 
-  .section { display: none; }
-  .section.active { display: block; }
+/* GROUP CARDS */
+.group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;}
+.group-card{background:white;border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;}
+.group-header{background:var(--pitch);color:white;padding:8px 14px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.group-body{padding:8px 14px;}
+.match-row{display:flex;align-items:center;gap:5px;padding:5px 0;border-bottom:1px solid var(--gray-100);position:relative;}
+.match-row:last-child{border-bottom:none;}
 
-  .group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1rem; }
-  .group-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; }
-  .group-header { background: var(--pitch); color: white; padding: 8px 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
-  .group-body { padding: 10px 14px; }
-  .match-row { display: flex; align-items: center; gap: 6px; padding: 5px 0; border-bottom: 1px solid var(--gray-100); }
-  .match-row:last-child { border-bottom: none; }
-  .t-name { flex: 1; font-size: 12px; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .t-name.right { text-align: left; }
-  .t-name.left { text-align: right; }
-  .score-wrap { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
-  .score-box { width: 30px; height: 28px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-800); background: var(--gray-50); }
-  .score-box:focus { outline: none; border-color: var(--green-mid); background: white; }
-  .score-sep { font-size: 11px; color: var(--gray-400); }
-  .flag { font-size: 15px; flex-shrink: 0; }
+/* STATUS COLORS */
+.match-row.done-correct{background:#f0fdf4;border-radius:6px;margin:2px -4px;padding:5px 4px;}
+.match-row.done-wrong{background:#fef2f2;border-radius:6px;margin:2px -4px;padding:5px 4px;}
+.match-row.done-pending{background:#fefce8;border-radius:6px;margin:2px -4px;padding:5px 4px;}
 
-  .champion-wrap { max-width: 560px; margin: 0 auto; }
-  .champion-wrap h2 { font-size: 18px; font-weight: 600; color: var(--pitch); margin-bottom: 6px; }
-  .champion-wrap p { font-size: 13px; color: var(--gray-600); margin-bottom: 1.25rem; }
-  .champion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
-  .champ-btn { padding: 9px 8px; border: 1.5px solid var(--gray-200); border-radius: 8px; background: white; font-size: 12px; color: var(--gray-800); cursor: pointer; text-align: center; transition: all 0.12s; line-height: 1.4; }
-  .champ-btn:hover { border-color: var(--green-mid); }
-  .champ-btn.selected { border-color: var(--green-mid); background: var(--green-light); color: var(--green); font-weight: 600; }
+.result-badge{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;}
+.badge-correct{background:#dcfce7;color:#166534;}
+.badge-wrong{background:#fee2e2;color:#991b1b;}
+.badge-draw{background:#fef9c3;color:#854d0e;}
 
-  .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--gray-200); padding: 12px 1.5rem; display: none; align-items: center; justify-content: space-between; gap: 12px; z-index: 50; }
-  .save-bar.visible { display: flex; }
-  .save-msg { font-size: 13px; color: var(--gray-600); }
-  .save-msg.ok { color: var(--green-mid); font-weight: 500; }
-  .btn-save { background: var(--green-mid); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
-  .btn-save:hover { background: var(--green); }
-  .btn-save:disabled { background: var(--gray-400); cursor: not-allowed; }
+.t-name{flex:1;font-size:12px;color:var(--gray-800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.t-name.left{text-align:right;}
+.score-wrap{display:flex;align-items:center;gap:3px;flex-shrink:0;}
+.score-box{width:28px;height:26px;border:1px solid var(--gray-200);border-radius:5px;text-align:center;font-size:13px;font-weight:600;color:var(--gray-800);background:var(--gray-50);}
+.score-box:focus{outline:none;border-color:var(--green-mid);background:white;}
+.score-box:disabled{background:var(--gray-100);color:var(--gray-400);cursor:not-allowed;}
+.score-sep{font-size:11px;color:var(--gray-400);}
+.flag{font-size:14px;flex-shrink:0;}
+.real-score{font-size:11px;font-weight:700;color:var(--pitch);background:var(--gray-100);padding:1px 5px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
 
-  .lb-item { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius); margin-bottom: 8px; overflow: hidden; }
-  .lb-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
-  .lb-header:hover { background: var(--gray-50); }
-  .lb-rank { font-size: 20px; min-width: 32px; }
-  .lb-info { flex: 1; }
-  .lb-name { font-size: 15px; font-weight: 600; color: var(--gray-800); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .lb-email { font-size: 12px; color: var(--gray-400); }
-  .lb-right { text-align: right; }
-  .lb-pct { font-size: 14px; font-weight: 600; color: var(--pitch); }
-  .lb-sub { font-size: 12px; color: var(--gray-400); }
-  .you-badge { background: var(--green-light); color: var(--green); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
-  .lb-detail { display: none; border-top: 1px solid var(--gray-100); padding: 12px 16px; }
-  .lb-detail.open { display: block; }
-  .lb-champion-line { font-size: 13px; color: var(--gray-600); margin-bottom: 10px; }
-  .lb-champion-line strong { color: var(--gold); }
-  .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 4px; }
-  .match-pill { display: flex; justify-content: space-between; align-items: center; font-size: 11px; padding: 4px 8px; border-radius: 6px; background: var(--gray-50); }
-  .match-score { font-weight: 700; font-size: 12px; color: var(--pitch); }
-  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
-  .empty-state .icon { font-size: 40px; display: block; margin-bottom: 10px; }
-  .lb-refresh { display: flex; justify-content: flex-end; margin-bottom: 12px; }
-  .btn-refresh { background: none; border: 1px solid var(--gray-200); padding: 6px 14px; border-radius: 7px; font-size: 13px; color: var(--gray-600); cursor: pointer; }
-  .btn-refresh:hover { background: var(--gray-100); }
-  .progress-bar-wrap { height: 4px; background: var(--gray-100); border-radius: 2px; margin-top: 4px; width: 80px; }
-  .progress-bar { height: 4px; background: var(--green-mid); border-radius: 2px; }
+/* DATE LABEL */
+.date-label{font-size:10px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px;padding:0 2px;}
+.date-label:first-child{margin-top:2px;}
 
-  .toast { position: fixed; top: 70px; right: 16px; background: var(--pitch); color: white; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 200; max-width: 280px; }
-  .toast.show { opacity: 1; }
+/* STATUS KEY */
+.status-key{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap;}
+.key-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--gray-600);}
+.key-dot{width:10px;height:10px;border-radius:50%;}
+.key-dot.green{background:#16a34a;}
+.key-dot.red{background:#dc2626;}
+.key-dot.yellow{background:#ca8a04;}
+.key-dot.gray{background:#9ca3af;}
 
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* CHAMPION */
+.champion-wrap{max-width:560px;margin:0 auto;}
+.champion-wrap h2{font-size:18px;font-weight:600;color:var(--pitch);margin-bottom:6px;}
+.champion-wrap p{font-size:13px;color:var(--gray-600);margin-bottom:1.25rem;}
+.champion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+.champ-btn{padding:9px 8px;border:1.5px solid var(--gray-200);border-radius:8px;background:white;font-size:12px;color:var(--gray-800);cursor:pointer;text-align:center;line-height:1.4;}
+.champ-btn:hover{border-color:var(--green-mid);}
+.champ-btn.selected{border-color:var(--green-mid);background:var(--green-light);color:var(--green);font-weight:600;}
 
-  @media (max-width: 480px) {
-    .t-name { font-size: 11px; }
-    .group-grid { grid-template-columns: 1fr; }
-    .champion-grid { grid-template-columns: repeat(3, 1fr); }
-    .lb-right { display: none; }
-  }
+/* SAVE BAR */
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--gray-200);padding:10px 1.5rem;display:none;align-items:center;justify-content:space-between;gap:12px;z-index:50;}
+.save-bar.visible{display:flex;}
+.save-msg{font-size:13px;color:var(--gray-600);}
+.save-msg.ok{color:var(--green-mid);font-weight:500;}
+.btn-save{background:var(--green-mid);color:white;border:none;padding:9px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+.btn-save:hover{background:var(--green);}
+.btn-save:disabled{background:var(--gray-400);cursor:not-allowed;}
+
+/* LEADERBOARD */
+.lb-item{background:white;border:1px solid var(--gray-200);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;}
+.lb-header{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;}
+.lb-header:hover{background:var(--gray-50);}
+.lb-rank{font-size:20px;min-width:32px;}
+.lb-info{flex:1;}
+.lb-name{font-size:15px;font-weight:600;color:var(--gray-800);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.lb-sub{font-size:12px;color:var(--gray-400);}
+.you-badge{background:var(--green-light);color:var(--green);font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;}
+.lb-right{text-align:right;}
+.lb-pts{font-size:14px;font-weight:700;color:var(--pitch);}
+.lb-detail{display:none;border-top:1px solid var(--gray-100);padding:12px 16px;}
+.lb-detail.open{display:block;}
+.lb-champ{font-size:13px;color:var(--gray-600);margin-bottom:8px;}
+.lb-champ strong{color:var(--gold);}
+.matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:3px;}
+.mpill{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:3px 7px;border-radius:5px;background:var(--gray-50);}
+.mpill.correct{background:#f0fdf4;}
+.mpill.wrong{background:#fef2f2;}
+.mscore{font-weight:700;font-size:12px;color:var(--pitch);}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--gray-400);}
+.empty-state .icon{font-size:40px;display:block;margin-bottom:10px;}
+.lb-refresh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.btn-refresh{background:none;border:1px solid var(--gray-200);padding:6px 14px;border-radius:7px;font-size:13px;color:var(--gray-600);cursor:pointer;}
+.btn-refresh:hover{background:var(--gray-100);}
+.prog-wrap{height:4px;background:var(--gray-100);border-radius:2px;margin-top:3px;width:80px;}
+.prog-bar{height:4px;background:var(--green-mid);border-radius:2px;}
+
+.toast{position:fixed;top:70px;right:16px;background:var(--pitch);color:white;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none;z-index:200;max-width:280px;}
+.toast.show{opacity:1;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* SCORE BANNER */
+.score-banner{background:white;border:1px solid var(--gray-200);border-radius:var(--radius);padding:12px 16px;margin-bottom:1.25rem;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.sb-item{display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--gray-600);}
+.sb-num{font-size:22px;font-weight:700;}
+.sb-num.green{color:var(--green-mid);}
+.sb-num.red{color:#dc2626;}
+.sb-num.gray{color:var(--gray-400);}
+.sb-divider{width:1px;height:36px;background:var(--gray-200);}
+
+@media(max-width:480px){
+  .t-name{font-size:11px;}
+  .group-grid{grid-template-columns:1fr;}
+  .champion-grid{grid-template-columns:repeat(3,1fr);}
+  .lb-right{display:none;}
+}
 </style>
 </head>
 <body>
 
 <header class="site-header">
-  <div class="logo">⚽ Mundial 2026</div>
+  <div class="logo">⚽ Quiniela Mundial 2026</div>
   <div class="user-info" id="header-user" style="display:none">
-    <img class="avatar" id="header-avatar" src="" alt="foto de perfil" />
+    <img class="avatar" id="header-avatar" src="" alt=""/>
     <span id="header-name" style="color:white;font-size:13px;"></span>
-    <button class="btn-logout" onclick="logout()">Salir</button>
+    <button class="btn-sm" onclick="logout()">Salir</button>
   </div>
 </header>
 
@@ -161,19 +167,25 @@
   <div class="login-card">
     <div class="ball">⚽</div>
     <h1>Quiniela Mundial 2026</h1>
-    <p>Inicia sesión con tu cuenta de Google para guardar tus predicciones y competir con tus amigos.</p>
+    <p>Inicia sesión con Google para guardar tus predicciones y competir con tus amigos.</p>
     <div id="g_id_signin"></div>
   </div>
 </div>
 
 <div id="app">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('grupos')">Fase de grupos</button>
+    <button class="tab active" onclick="showTab('grupos')">Grupos</button>
     <button class="tab" onclick="showTab('campeon')">Campeón</button>
     <button class="tab" onclick="showTab('marcador')">Marcador</button>
   </div>
 
   <div id="tab-grupos" class="section active">
+    <div class="status-key">
+      <div class="key-item"><div class="key-dot green"></div>Acertaste</div>
+      <div class="key-item"><div class="key-dot yellow"></div>Resultado correcto (marcador diferente)</div>
+      <div class="key-item"><div class="key-dot red"></div>Fallaste</div>
+      <div class="key-item"><div class="key-dot gray"></div>Partido pendiente</div>
+    </div>
     <div class="group-grid" id="groups-container"></div>
   </div>
 
@@ -187,6 +199,7 @@
 
   <div id="tab-marcador" class="section">
     <div class="lb-refresh">
+      <span style="font-size:13px;color:var(--gray-600);">Clasificación general</span>
       <button class="btn-refresh" onclick="loadLeaderboard()">↻ Actualizar</button>
     </div>
     <div id="leaderboard-list"></div>
@@ -195,389 +208,468 @@
 
 <div class="save-bar" id="save-bar">
   <span class="save-msg" id="save-msg">Recuerda guardar tus predicciones</span>
-  <button class="btn-save" id="btn-save" onclick="saveQuiniela()">Guardar quiniela</button>
+  <button class="btn-save" id="btn-save" onclick="saveQuiniela()">Guardar</button>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-const CLIENT_ID = '180539664234-fu9icb6inpere54mepo5vpq6ojcd9bin.apps.googleusercontent.com';
-const SCOPES = 'https://www.googleapis.com/auth/drive.file';
-const FOLDER_NAME = 'QuinielaMundial2026';
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const CLIENT_ID='180539664234-fu9icb6inpere54mepo5vpq6ojcd9bin.apps.googleusercontent.com';
+const SCOPES='https://www.googleapis.com/auth/drive.file';
+const FOLDER_NAME='QuinielaMundial2026';
 
+// ── FIXTURE REAL MUNDIAL 2026 ─────────────────────────────────────────────────
+// Formato partido: [local, flagLocal, visitante, flagVisitante, fecha_ISO, resultado_real_o_null]
+// resultado_real: {h:X, a:Y} cuando el partido ya terminó
 const GROUPS = [
-  { name:"Grupo A", matches:[["México","🇲🇽","Camerún","🇨🇲"],["Polonia","🇵🇱","Arabia S.","🇸🇦"],["México","🇲🇽","Polonia","🇵🇱"],["Camerún","🇨🇲","Arabia S.","🇸🇦"],["México","🇲🇽","Arabia S.","🇸🇦"],["Camerún","🇨🇲","Polonia","🇵🇱"]] },
-  { name:"Grupo B", matches:[["Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Irán","🇮🇷"],["EE.UU.","🇺🇸","Gales","🏴󠁧󠁢󠁷󠁬󠁳󠁿"],["Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿","EE.UU.","🇺🇸"],["Irán","🇮🇷","Gales","🏴󠁧󠁢󠁷󠁬󠁳󠁿"],["Gales","🏴󠁧󠁢󠁷󠁬󠁳󠁿","Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿"],["Irán","🇮🇷","EE.UU.","🇺🇸"]] },
-  { name:"Grupo C", matches:[["Argentina","🇦🇷","Arabia S.","🇸🇦"],["México","🇲🇽","Polonia","🇵🇱"],["Argentina","🇦🇷","México","🇲🇽"],["Polonia","🇵🇱","Arabia S.","🇸🇦"],["Argentina","🇦🇷","Polonia","🇵🇱"],["Arabia S.","🇸🇦","México","🇲🇽"]] },
-  { name:"Grupo D", matches:[["Francia","🇫🇷","Australia","🇦🇺"],["Dinamarca","🇩🇰","Túnez","🇹🇳"],["Francia","🇫🇷","Dinamarca","🇩🇰"],["Túnez","🇹🇳","Australia","🇦🇺"],["Australia","🇦🇺","Dinamarca","🇩🇰"],["Túnez","🇹🇳","Francia","🇫🇷"]] },
-  { name:"Grupo E", matches:[["España","🇪🇸","Costa Rica","🇨🇷"],["Alemania","🇩🇪","Japón","🇯🇵"],["España","🇪🇸","Alemania","🇩🇪"],["Japón","🇯🇵","Costa Rica","🇨🇷"],["Costa Rica","🇨🇷","Alemania","🇩🇪"],["Japón","🇯🇵","España","🇪🇸"]] },
-  { name:"Grupo F", matches:[["Bélgica","🇧🇪","Canadá","🇨🇦"],["Marruecos","🇲🇦","Croacia","🇭🇷"],["Bélgica","🇧🇪","Marruecos","🇲🇦"],["Croacia","🇭🇷","Canadá","🇨🇦"],["Croacia","🇭🇷","Bélgica","🇧🇪"],["Canadá","🇨🇦","Marruecos","🇲🇦"]] },
-  { name:"Grupo G", matches:[["Brasil","🇧🇷","Serbia","🇷🇸"],["Suiza","🇨🇭","Camerún","🇨🇲"],["Brasil","🇧🇷","Suiza","🇨🇭"],["Camerún","🇨🇲","Serbia","🇷🇸"],["Camerún","🇨🇲","Brasil","🇧🇷"],["Serbia","🇷🇸","Suiza","🇨🇭"]] },
-  { name:"Grupo H", matches:[["Portugal","🇵🇹","Ghana","🇬🇭"],["Uruguay","🇺🇾","Corea del Sur","🇰🇷"],["Portugal","🇵🇹","Uruguay","🇺🇾"],["Corea del Sur","🇰🇷","Ghana","🇬🇭"],["Ghana","🇬🇭","Uruguay","🇺🇾"],["Corea del Sur","🇰🇷","Portugal","🇵🇹"]] }
+  { name:"Grupo A", matches:[
+    ["México","🇲🇽","Sudáfrica","🇿🇦","2026-06-11",{h:2,a:0}],
+    ["Corea del Sur","🇰🇷","Rep. Checa","🇨🇿","2026-06-11",null],
+    ["Rep. Checa","🇨🇿","Sudáfrica","🇿🇦","2026-06-18",null],
+    ["México","🇲🇽","Corea del Sur","🇰🇷","2026-06-18",null],
+    ["Rep. Checa","🇨🇿","México","🇲🇽","2026-06-24",null],
+    ["Sudáfrica","🇿🇦","Corea del Sur","🇰🇷","2026-06-24",null]
+  ]},
+  { name:"Grupo B", matches:[
+    ["Canadá","🇨🇦","Bosnia y Herz.","🇧🇦","2026-06-12",{h:1,a:1}],
+    ["Qatar","🇶🇦","Suiza","🇨🇭","2026-06-13",{h:1,a:1}],
+    ["Suiza","🇨🇭","Bosnia y Herz.","🇧🇦","2026-06-18",null],
+    ["Canadá","🇨🇦","Qatar","🇶🇦","2026-06-18",null],
+    ["Suiza","🇨🇭","Canadá","🇨🇦","2026-06-24",null],
+    ["Bosnia y Herz.","🇧🇦","Qatar","🇶🇦","2026-06-24",null]
+  ]},
+  { name:"Grupo C", matches:[
+    ["Brasil","🇧🇷","Marruecos","🇲🇦","2026-06-13",{h:1,a:1}],
+    ["Haití","🇭🇹","Escocia","🏴󠁧󠁢󠁳󠁣󠁴󠁿","2026-06-13",{h:0,a:1}],
+    ["Escocia","🏴󠁧󠁢󠁳󠁣󠁴󠁿","Marruecos","🇲🇦","2026-06-19",null],
+    ["Brasil","🇧🇷","Haití","🇭🇹","2026-06-19",null],
+    ["Escocia","🏴󠁧󠁢󠁳󠁣󠁴󠁿","Brasil","🇧🇷","2026-06-24",null],
+    ["Marruecos","🇲🇦","Haití","🇭🇹","2026-06-24",null]
+  ]},
+  { name:"Grupo D", matches:[
+    ["EE.UU.","🇺🇸","Paraguay","🇵🇾","2026-06-12",{h:4,a:1}],
+    ["Australia","🇦🇺","Turquía","🇹🇷","2026-06-13",{h:2,a:0}],
+    ["EE.UU.","🇺🇸","Australia","🇦🇺","2026-06-19",null],
+    ["Turquía","🇹🇷","Paraguay","🇵🇾","2026-06-19",null],
+    ["Turquía","🇹🇷","EE.UU.","🇺🇸","2026-06-25",null],
+    ["Paraguay","🇵🇾","Australia","🇦🇺","2026-06-25",null]
+  ]},
+  { name:"Grupo E", matches:[
+    ["Alemania","🇩🇪","Curazao","🇨🇼","2026-06-14",{h:7,a:1}],
+    ["Costa de Marfil","🇨🇮","Ecuador","🇪🇨","2026-06-14",null],
+    ["Alemania","🇩🇪","Costa de Marfil","🇨🇮","2026-06-20",null],
+    ["Ecuador","🇪🇨","Curazao","🇨🇼","2026-06-20",null],
+    ["Ecuador","🇪🇨","Alemania","🇩🇪","2026-06-25",null],
+    ["Curazao","🇨🇼","Costa de Marfil","🇨🇮","2026-06-25",null]
+  ]},
+  { name:"Grupo F", matches:[
+    ["Países Bajos","🇳🇱","Japón","🇯🇵","2026-06-14",{h:2,a:2}],
+    ["Suecia","🇸🇪","Túnez","🇹🇳","2026-06-14",null],
+    ["Países Bajos","🇳🇱","Suecia","🇸🇪","2026-06-20",null],
+    ["Japón","🇯🇵","Túnez","🇹🇳","2026-06-20",null],
+    ["Japón","🇯🇵","Suecia","🇸🇪","2026-06-25",null],
+    ["Túnez","🇹🇳","Países Bajos","🇳🇱","2026-06-25",null]
+  ]},
+  { name:"Grupo G", matches:[
+    ["Bélgica","🇧🇪","Egipto","🇪🇬","2026-06-15",null],
+    ["Irán","🇮🇷","Nueva Zelanda","🇳🇿","2026-06-15",null],
+    ["Bélgica","🇧🇪","Irán","🇮🇷","2026-06-21",null],
+    ["Nueva Zelanda","🇳🇿","Egipto","🇪🇬","2026-06-21",null],
+    ["Nueva Zelanda","🇳🇿","Bélgica","🇧🇪","2026-06-26",null],
+    ["Egipto","🇪🇬","Irán","🇮🇷","2026-06-26",null]
+  ]},
+  { name:"Grupo H", matches:[
+    ["España","🇪🇸","Cabo Verde","🇨🇻","2026-06-15",null],
+    ["Arabia S.","🇸🇦","Uruguay","🇺🇾","2026-06-15",null],
+    ["España","🇪🇸","Arabia S.","🇸🇦","2026-06-21",null],
+    ["Uruguay","🇺🇾","Cabo Verde","🇨🇻","2026-06-21",null],
+    ["España","🇪🇸","Uruguay","🇺🇾","2026-06-26",null],
+    ["Cabo Verde","🇨🇻","Arabia S.","🇸🇦","2026-06-26",null]
+  ]},
+  { name:"Grupo I", matches:[
+    ["Francia","🇫🇷","Senegal","🇸🇳","2026-06-16",null],
+    ["Irak","🇮🇶","Noruega","🇳🇴","2026-06-16",null],
+    ["Francia","🇫🇷","Irak","🇮🇶","2026-06-22",null],
+    ["Noruega","🇳🇴","Senegal","🇸🇳","2026-06-22",null],
+    ["Noruega","🇳🇴","Francia","🇫🇷","2026-06-26",null],
+    ["Senegal","🇸🇳","Irak","🇮🇶","2026-06-26",null]
+  ]},
+  { name:"Grupo J", matches:[
+    ["Argentina","🇦🇷","Argelia","🇩🇿","2026-06-16",null],
+    ["Austria","🇦🇹","Jordania","🇯🇴","2026-06-16",null],
+    ["Argentina","🇦🇷","Austria","🇦🇹","2026-06-22",null],
+    ["Jordania","🇯🇴","Argelia","🇩🇿","2026-06-22",null],
+    ["Argelia","🇩🇿","Austria","🇦🇹","2026-06-27",null],
+    ["Jordania","🇯🇴","Argentina","🇦🇷","2026-06-27",null]
+  ]},
+  { name:"Grupo K", matches:[
+    ["Portugal","🇵🇹","RD Congo","🇨🇩","2026-06-17",null],
+    ["Uzbekistán","🇺🇿","Colombia","🇨🇴","2026-06-17",null],
+    ["Portugal","🇵🇹","Uzbekistán","🇺🇿","2026-06-23",null],
+    ["Colombia","🇨🇴","RD Congo","🇨🇩","2026-06-23",null],
+    ["Colombia","🇨🇴","Portugal","🇵🇹","2026-06-27",null],
+    ["RD Congo","🇨🇩","Uzbekistán","🇺🇿","2026-06-27",null]
+  ]},
+  { name:"Grupo L", matches:[
+    ["Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croacia","🇭🇷","2026-06-17",null],
+    ["Ghana","🇬🇭","Panamá","🇵🇦","2026-06-17",null],
+    ["Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿","Ghana","🇬🇭","2026-06-23",null],
+    ["Panamá","🇵🇦","Croacia","🇭🇷","2026-06-23",null],
+    ["Panamá","🇵🇦","Inglaterra","🏴󠁧󠁢󠁥󠁮󠁧󠁿","2026-06-27",null],
+    ["Croacia","🇭🇷","Ghana","🇬🇭","2026-06-27",null]
+  ]}
 ];
 
-const CHAMPIONS = [
+const CHAMPIONS=[
   "Argentina 🇦🇷","Brasil 🇧🇷","Francia 🇫🇷","Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿","España 🇪🇸","Alemania 🇩🇪",
   "Portugal 🇵🇹","México 🇲🇽","Países Bajos 🇳🇱","Bélgica 🇧🇪","Uruguay 🇺🇾","Croacia 🇭🇷",
   "Marruecos 🇲🇦","Senegal 🇸🇳","EE.UU. 🇺🇸","Japón 🇯🇵","Canadá 🇨🇦","Colombia 🇨🇴",
-  "Ecuador 🇪🇨","Dinamarca 🇩🇰","Suiza 🇨🇭","Australia 🇦🇺"
+  "Ecuador 🇪🇨","Dinamarca 🇩🇰","Suiza 🇨🇭","Australia 🇦🇺","Suecia 🇸🇪","Noruega 🇳🇴"
 ];
 
-let tokenClient = null;
-let accessToken = null;
-let currentUser = null;
-let picks = {};
-let champion = null;
-let driveFileId = null;
-let folderId = null;
-let indexFileId = null;
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let tokenClient=null,accessToken=null,currentUser=null;
+let picks={},champion=null,driveFileId=null,folderId=null,indexFileId=null;
+
+// ── SCORING ───────────────────────────────────────────────────────────────────
+function scoreResult(real,pred){
+  if(!real||pred.h===null||pred.h===undefined||pred.a===null||pred.a===undefined) return 'pending';
+  const rSign=Math.sign(real.h-real.a), pSign=Math.sign(pred.h-pred.a);
+  if(real.h===pred.h&&real.a===pred.a) return 'exact';      // marcador exacto
+  if(rSign===pSign) return 'result';                          // resultado correcto (G/E/P)
+  return 'wrong';
+}
+
+function calcPoints(picksObj){
+  let pts=0,exact=0,result=0,wrong=0,pending=0;
+  GROUPS.forEach((g,gi)=>{
+    g.matches.forEach((m,mi)=>{
+      const key=`g${gi}_m${mi}`;
+      const p=picksObj[key];
+      const real=m[4+1]; // index 5
+      const status=scoreResult(real,p||{});
+      if(status==='exact'){pts+=3;exact++;}
+      else if(status==='result'){pts+=1;result++;}
+      else if(status==='wrong'){wrong++;}
+      else{pending++;}
+    });
+  });
+  return{pts,exact,result,wrong,pending};
+}
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
-window.onload = () => {
-  google.accounts.id.initialize({
-    client_id: CLIENT_ID,
-    callback: handleCredential,
-    ux_mode: 'popup',
-    auto_select: false
-  });
-  google.accounts.id.renderButton(document.getElementById('g_id_signin'), {
-    theme: 'outline', size: 'large', text: 'signin_with_google', shape: 'rectangular', width: 280
-  });
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID,
-    scope: SCOPES,
-    callback: async (resp) => {
-      if (resp.error) { showToast('Error al conectar con Drive ❌'); return; }
-      accessToken = resp.access_token;
+window.onload=()=>{
+  google.accounts.id.initialize({client_id:CLIENT_ID,callback:handleCredential,ux_mode:'popup',auto_select:false});
+  google.accounts.id.renderButton(document.getElementById('g_id_signin'),{theme:'outline',size:'large',text:'signin_with_google',shape:'rectangular',width:280});
+  tokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:CLIENT_ID,scope:SCOPES,
+    callback:async(resp)=>{
+      if(resp.error){showToast('Error al conectar con Drive ❌');return;}
+      accessToken=resp.access_token;
       await initDrive();
     }
   });
 };
 
-function handleCredential(response) {
-  const payload = JSON.parse(atob(response.credential.split('.')[1]));
-  currentUser = { name: payload.name, email: payload.email, picture: payload.picture };
-  document.getElementById('header-avatar').src = payload.picture;
-  document.getElementById('header-name').textContent = payload.name.split(' ')[0];
-  document.getElementById('header-user').style.display = 'flex';
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+function handleCredential(response){
+  const payload=JSON.parse(atob(response.credential.split('.')[1]));
+  currentUser={name:payload.name,email:payload.email,picture:payload.picture};
+  document.getElementById('header-avatar').src=payload.picture;
+  document.getElementById('header-name').textContent=payload.name.split(' ')[0];
+  document.getElementById('header-user').style.display='flex';
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
   document.getElementById('save-bar').classList.add('visible');
   buildGroups();
   buildChampions();
-  tokenClient.requestAccessToken({ prompt: '' });
+  tokenClient.requestAccessToken({prompt:''});
 }
 
-function logout() {
+function logout(){
   google.accounts.id.disableAutoSelect();
-  accessToken = null; currentUser = null; picks = {}; champion = null;
-  driveFileId = null; folderId = null; indexFileId = null;
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('header-user').style.display = 'none';
+  accessToken=null;currentUser=null;picks={};champion=null;driveFileId=null;folderId=null;indexFileId=null;
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('header-user').style.display='none';
   document.getElementById('save-bar').classList.remove('visible');
 }
 
 // ── DRIVE ─────────────────────────────────────────────────────────────────────
-async function api(url, method = 'GET', body = null) {
-  const opts = { method, headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' } };
-  if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(url, opts);
-  if (r.status === 204) return {};
+async function api(url,method='GET',body=null){
+  const opts={method,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'}};
+  if(body) opts.body=JSON.stringify(body);
+  const r=await fetch(url,opts);
+  if(r.status===204) return{};
   return r.json();
 }
 
-async function uploadMultipart(meta, content, fileId = null) {
-  const boundary = 'quinielaboundary';
-  const body = `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(meta)}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(content)}\r\n--${boundary}--`;
-  const url = fileId
-    ? `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart&fields=id`
-    : `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id`;
-  const r = await fetch(url, {
-    method: fileId ? 'PATCH' : 'POST',
-    headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': `multipart/related; boundary=${boundary}` },
-    body
-  });
+async function uploadMultipart(meta,content,fileId=null){
+  const boundary='quinielaboundary';
+  const body=`--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(meta)}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(content)}\r\n--${boundary}--`;
+  const url=fileId
+    ?`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart&fields=id`
+    :`https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id`;
+  const r=await fetch(url,{method:fileId?'PATCH':'POST',headers:{Authorization:'Bearer '+accessToken,'Content-Type':`multipart/related; boundary=${boundary}`},body});
   return r.json();
 }
 
-async function readFile(id) {
-  const r = await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`, {
-    headers: { Authorization: 'Bearer ' + accessToken }
-  });
-  if (!r.ok) return null;
+async function readFile(id){
+  const r=await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`,{headers:{Authorization:'Bearer '+accessToken}});
+  if(!r.ok) return null;
   return r.json();
 }
 
-async function findFile(name, parentId) {
-  const q = `name='${name}' and '${parentId}' in parents and trashed=false`;
-  const res = await api(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)`);
-  return res.files && res.files.length > 0 ? res.files[0].id : null;
+async function findFile(name,parentId){
+  const q=`name='${name}' and '${parentId}' in parents and trashed=false`;
+  const res=await api(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)`);
+  return res.files&&res.files.length>0?res.files[0].id:null;
 }
 
-async function makePublic(id) {
-  await api(`https://www.googleapis.com/drive/v3/files/${id}/permissions`, 'POST', { role: 'reader', type: 'anyone' });
+async function makePublic(id){
+  await api(`https://www.googleapis.com/drive/v3/files/${id}/permissions`,'POST',{role:'reader',type:'anyone'});
 }
 
-async function initDrive() {
+async function initDrive(){
   setSaveMsg('Conectando con Drive...');
-  try {
-    // Find or create folder
-    const q = `name='${FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false`;
-    const res = await api(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id)`);
-    if (res.files && res.files.length > 0) {
-      folderId = res.files[0].id;
-    } else {
-      const f = await api('https://www.googleapis.com/drive/v3/files?fields=id', 'POST');
-      const created = await uploadMultipart({ name: FOLDER_NAME, mimeType: 'application/vnd.google-apps.folder' }, {});
-      folderId = created.id;
+  try{
+    const q=`name='${FOLDER_NAME}' and mimeType='application/vnd.google-apps.folder' and trashed=false`;
+    const res=await api(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id)`);
+    if(res.files&&res.files.length>0){folderId=res.files[0].id;}
+    else{
+      const created=await uploadMultipart({name:FOLDER_NAME,mimeType:'application/vnd.google-apps.folder'},{});
+      folderId=created.id;
       await makePublic(folderId);
     }
-    // Try to load my existing quiniela
-    const safeName = `q_${currentUser.email.replace(/[^a-z0-9]/gi,'_')}.json`;
-    const existingId = await findFile(safeName, folderId);
-    if (existingId) {
-      driveFileId = existingId;
-      const data = await readFile(existingId);
-      if (data) {
-        picks = data.picks || {};
-        champion = data.champion || null;
-        fillInputs();
-        fillChampion();
-        setSaveMsg('✓ Quiniela cargada', true);
-        return;
-      }
+    const safeName=`q_${currentUser.email.replace(/[^a-z0-9]/gi,'_')}.json`;
+    const existingId=await findFile(safeName,folderId);
+    if(existingId){
+      driveFileId=existingId;
+      const data=await readFile(existingId);
+      if(data){picks=data.picks||{};champion=data.champion||null;fillInputs();fillChampion();setSaveMsg('✓ Quiniela cargada',true);return;}
     }
     setSaveMsg('Llena tu quiniela y guarda');
-  } catch(e) {
-    console.error(e);
-    setSaveMsg('Error al conectar con Drive');
-  }
+  }catch(e){console.error(e);setSaveMsg('Error al conectar');}
 }
 
-async function saveQuiniela() {
-  if (!accessToken) { tokenClient.requestAccessToken({ prompt: '' }); return; }
-  const btn = document.getElementById('btn-save');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Guardando...';
-  try {
-    const safeName = `q_${currentUser.email.replace(/[^a-z0-9]/gi,'_')}.json`;
-    const payload = {
-      user: { name: currentUser.name, email: currentUser.email, picture: currentUser.picture },
-      picks, champion,
-      savedAt: new Date().toISOString()
-    };
-    if (driveFileId) {
-      await uploadMultipart({ name: safeName }, payload, driveFileId);
-    } else {
-      const res = await uploadMultipart({ name: safeName, parents: [folderId] }, payload);
-      driveFileId = res.id;
+async function saveQuiniela(){
+  if(!accessToken){tokenClient.requestAccessToken({prompt:''});return;}
+  const btn=document.getElementById('btn-save');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Guardando...';
+  try{
+    const safeName=`q_${currentUser.email.replace(/[^a-z0-9]/gi,'_')}.json`;
+    const payload={user:{name:currentUser.name,email:currentUser.email,picture:currentUser.picture},picks,champion,savedAt:new Date().toISOString()};
+    if(driveFileId){await uploadMultipart({name:safeName},payload,driveFileId);}
+    else{
+      const res=await uploadMultipart({name:safeName,parents:[folderId]},payload);
+      driveFileId=res.id;
       await makePublic(driveFileId);
     }
-    // Update index
     await saveIndex(safeName);
-    setSaveMsg('✓ Guardado en Google Drive', true);
+    setSaveMsg('✓ Guardado en Google Drive',true);
     showToast('¡Quiniela guardada! 🎉');
-  } catch(e) {
-    console.error(e);
-    showToast('Error al guardar. Intenta de nuevo. ❌');
-  }
-  btn.disabled = false;
-  btn.textContent = 'Guardar quiniela';
+    buildGroups(); // refresh colors
+  }catch(e){console.error(e);showToast('Error al guardar ❌');}
+  btn.disabled=false;btn.textContent='Guardar';
 }
 
-async function saveIndex(fileName) {
-  const idxName = '_index.json';
-  const existingId = await findFile(idxName, folderId);
-  let index = {};
-  if (existingId) {
-    indexFileId = existingId;
-    const data = await readFile(existingId);
-    if (data) index = data;
-  }
-  index[currentUser.email] = {
-    fileId: driveFileId,
-    fileName,
-    name: currentUser.name,
-    picture: currentUser.picture,
-    updatedAt: new Date().toISOString()
-  };
-  if (indexFileId) {
-    await uploadMultipart({ name: idxName }, index, indexFileId);
-  } else {
-    const res = await uploadMultipart({ name: idxName, parents: [folderId] }, index);
-    indexFileId = res.id;
-    await makePublic(indexFileId);
-  }
+async function saveIndex(fileName){
+  const idxName='_index.json';
+  const existingId=await findFile(idxName,folderId);
+  let index={};
+  if(existingId){indexFileId=existingId;const d=await readFile(existingId);if(d) index=d;}
+  index[currentUser.email]={fileId:driveFileId,fileName,name:currentUser.name,picture:currentUser.picture,updatedAt:new Date().toISOString()};
+  if(indexFileId){await uploadMultipart({name:idxName},index,indexFileId);}
+  else{const res=await uploadMultipart({name:idxName,parents:[folderId]},index);indexFileId=res.id;await makePublic(indexFileId);}
 }
 
 // ── LEADERBOARD ───────────────────────────────────────────────────────────────
-async function loadLeaderboard() {
-  const list = document.getElementById('leaderboard-list');
-  list.innerHTML = '<div class="empty-state"><span class="icon">⏳</span>Cargando quinielas...</div>';
-  if (!accessToken || !folderId) {
-    list.innerHTML = '<div class="empty-state"><span class="icon">🔒</span>Cargando... espera un momento.</div>';
-    return;
-  }
-  try {
-    const idxId = await findFile('_index.json', folderId);
-    if (!idxId) {
-      list.innerHTML = '<div class="empty-state"><span class="icon">🏆</span>Aún no hay quinielas guardadas.<br>¡Sé el primero!</div>';
-      return;
-    }
-    const index = await readFile(idxId);
-    if (!index || Object.keys(index).length === 0) {
-      list.innerHTML = '<div class="empty-state"><span class="icon">🏆</span>Aún no hay quinielas guardadas.</div>';
-      return;
-    }
-    const entries = Object.entries(index);
-    const users = await Promise.all(entries.map(async ([email, meta]) => {
-      try {
-        const data = await readFile(meta.fileId);
-        return data ? { ...meta, email, data } : null;
-      } catch(e) { return null; }
+async function loadLeaderboard(){
+  const list=document.getElementById('leaderboard-list');
+  list.innerHTML='<div class="empty-state"><span class="icon">⏳</span>Cargando...</div>';
+  if(!accessToken||!folderId){list.innerHTML='<div class="empty-state"><span class="icon">🔒</span>Cargando, espera un momento...</div>';return;}
+  try{
+    const idxId=await findFile('_index.json',folderId);
+    if(!idxId){list.innerHTML='<div class="empty-state"><span class="icon">🏆</span>Aún no hay quinielas guardadas.<br>¡Sé el primero!</div>';return;}
+    const index=await readFile(idxId);
+    if(!index||Object.keys(index).length===0){list.innerHTML='<div class="empty-state"><span class="icon">🏆</span>Aún no hay quinielas.</div>';return;}
+    const users=await Promise.all(Object.entries(index).map(async([email,meta])=>{
+      try{const data=await readFile(meta.fileId);return data?{...meta,email,data}:null;}
+      catch(e){return null;}
     }));
-    const total = GROUPS.reduce((s, g) => s + g.matches.length, 0);
-    const valid = users.filter(Boolean).sort((a, b) => countFilled(b.data) - countFilled(a.data));
-    if (valid.length === 0) {
-      list.innerHTML = '<div class="empty-state"><span class="icon">🏆</span>Aún no hay quinielas.</div>';
-      return;
-    }
-    list.innerHTML = '';
-    const medals = ['🥇','🥈','🥉'];
-    valid.forEach((u, i) => {
-      const filled = countFilled(u.data);
-      const pct = Math.round((filled / total) * 100);
-      const isMe = u.email === currentUser?.email;
-      const pic = u.data.user?.picture || u.picture || '';
-      const div = document.createElement('div');
-      div.className = 'lb-item';
-      div.innerHTML = `
+    const valid=users.filter(Boolean).sort((a,b)=>calcPoints(b.data.picks||{}).pts-calcPoints(a.data.picks||{}).pts);
+    list.innerHTML='';
+    const medals=['🥇','🥈','🥉'];
+    valid.forEach((u,i)=>{
+      const sc=calcPoints(u.data.picks||{});
+      const isMe=u.email===currentUser?.email;
+      const div=document.createElement('div');
+      div.className='lb-item';
+      div.innerHTML=`
         <div class="lb-header" onclick="this.nextElementSibling.classList.toggle('open')">
-          <span class="lb-rank">${medals[i] || '#'+(i+1)}</span>
-          ${pic ? `<img src="${pic}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0" alt="" />` : ''}
+          <span class="lb-rank">${medals[i]||(i+1)}</span>
+          ${u.data.user?.picture?`<img src="${u.data.user.picture}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0" alt=""/>` :''}
           <div class="lb-info">
-            <div class="lb-name">${u.data.user?.name || u.name} ${isMe ? '<span class="you-badge">tú</span>' : ''}</div>
-            <div class="lb-email">${u.email}</div>
+            <div class="lb-name">${u.data.user?.name||u.name} ${isMe?'<span class="you-badge">tú</span>':''}</div>
+            <div class="lb-sub">${u.email}</div>
           </div>
           <div class="lb-right">
-            <div class="lb-pct">${filled}/${total}</div>
-            <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
-            <div class="lb-sub">${pct}% completado</div>
+            <div class="lb-pts">${sc.pts} pts</div>
+            <div style="font-size:11px;color:var(--gray-400)">✓${sc.exact} ≈${sc.result} ✗${sc.wrong}</div>
+            <div class="prog-wrap"><div class="prog-bar" style="width:${Math.round(((sc.exact+sc.result+sc.wrong)/(sc.exact+sc.result+sc.wrong+sc.pending||1))*100)}%"></div></div>
           </div>
         </div>
         <div class="lb-detail">
-          <div class="lb-champion-line">🏆 Campeón: <strong>${u.data.champion || 'No elegido aún'}</strong></div>
-          <div class="matches-grid">${renderMatches(u.data.picks || {})}</div>
+          <div class="lb-champ">🏆 Campeón: <strong>${u.data.champion||'No elegido aún'}</strong></div>
+          <div class="matches-grid">${renderMatchesLB(u.data.picks||{})}</div>
         </div>`;
       list.appendChild(div);
     });
-  } catch(e) {
-    console.error(e);
-    list.innerHTML = '<div class="empty-state"><span class="icon">⚠️</span>Error al cargar. Intenta de nuevo.</div>';
-  }
+  }catch(e){console.error(e);list.innerHTML='<div class="empty-state"><span class="icon">⚠️</span>Error al cargar. Intenta de nuevo.</div>';}
 }
 
-function renderMatches(p) {
-  let html = '';
-  GROUPS.forEach((g, gi) => {
-    g.matches.forEach((m, mi) => {
-      const v = p[`g${gi}_m${mi}`];
-      if (v && v.h !== null && v.h !== undefined && v.a !== null && v.a !== undefined) {
-        html += `<div class="match-pill"><span>${m[1]} ${m[0]} vs ${m[2]} ${m[3]}</span><span class="match-score">${v.h}–${v.a}</span></div>`;
+function renderMatchesLB(p){
+  let html='';
+  GROUPS.forEach((g,gi)=>{
+    g.matches.forEach((m,mi)=>{
+      const key=`g${gi}_m${mi}`;
+      const v=p[key];
+      const real=m[5];
+      if(v&&v.h!==null&&v.h!==undefined&&v.a!==null&&v.a!==undefined){
+        const st=scoreResult(real,v);
+        const cls=st==='exact'?'correct':st==='result'?'':st==='wrong'?'wrong':'';
+        html+=`<div class="mpill ${cls}"><span>${m[1]} ${m[0]} v ${m[2]} ${m[3]}</span><span class="mscore">${v.h}–${v.a}</span></div>`;
       }
     });
   });
-  return html || '<span style="font-size:12px;color:#9ca3af">Sin predicciones aún</span>';
+  return html||'<span style="font-size:12px;color:#9ca3af">Sin predicciones</span>';
 }
 
-function countFilled(data) {
-  if (!data?.picks) return 0;
-  return Object.values(data.picks).filter(p => p.h !== null && p.h !== undefined && p.a !== null && p.a !== undefined).length;
-}
+// ── UI BUILDERS ───────────────────────────────────────────────────────────────
+function buildGroups(){
+  const c=document.getElementById('groups-container');
+  c.innerHTML='';
+  const today=new Date().toISOString().slice(0,10);
 
-// ── UI ────────────────────────────────────────────────────────────────────────
-function buildGroups() {
-  const c = document.getElementById('groups-container');
-  c.innerHTML = '';
-  GROUPS.forEach((g, gi) => {
-    const card = document.createElement('div');
-    card.className = 'group-card';
-    card.innerHTML = `<div class="group-header">${g.name}</div><div class="group-body"></div>`;
-    const body = card.querySelector('.group-body');
-    g.matches.forEach((m, mi) => {
-      const key = `g${gi}_m${mi}`;
-      const row = document.createElement('div');
-      row.className = 'match-row';
-      row.innerHTML = `
+  GROUPS.forEach((g,gi)=>{
+    const card=document.createElement('div');
+    card.className='group-card';
+    card.innerHTML=`<div class="group-header">${g.name}</div><div class="group-body" id="gb_${gi}"></div>`;
+    const body=card.querySelector(`#gb_${gi}`);
+
+    let lastDate='';
+    g.matches.forEach((m,mi)=>{
+      const key=`g${gi}_m${mi}`;
+      const real=m[5];
+      const p=picks[key]||{};
+      const status=scoreResult(real,p);
+      const matchDate=m[4];
+      const isFuture=matchDate>today;
+      const isPast=matchDate<today;
+      const isToday=matchDate===today;
+
+      // date label
+      if(matchDate!==lastDate){
+        const dl=document.createElement('div');
+        const d=new Date(matchDate+'T12:00:00');
+        dl.className='date-label';
+        dl.textContent=d.toLocaleDateString('es-MX',{day:'numeric',month:'short'});
+        body.appendChild(dl);
+        lastDate=matchDate;
+      }
+
+      const row=document.createElement('div');
+      row.className='match-row';
+      if(real){
+        if(status==='exact') row.classList.add('done-correct');
+        else if(status==='result') row.classList.add('done-pending');
+        else if(status==='wrong') row.classList.add('done-wrong');
+      }
+
+      const hVal=p.h!==null&&p.h!==undefined?p.h:'';
+      const aVal=p.a!==null&&p.a!==undefined?p.a:'';
+
+      row.innerHTML=`
         <span class="flag">${m[1]}</span>
         <span class="t-name left">${m[0]}</span>
         <div class="score-wrap">
-          <input class="score-box" type="number" min="0" max="20" id="${key}_h" placeholder="–" oninput="setPick('${key}','h',this.value)" />
-          <span class="score-sep">:</span>
-          <input class="score-box" type="number" min="0" max="20" id="${key}_a" placeholder="–" oninput="setPick('${key}','a',this.value)" />
+          <input class="score-box" type="number" min="0" max="20" id="${key}_h" value="${hVal}" placeholder="–"
+            ${real?'disabled':''} oninput="setPick('${key}','h',this.value)"/>
+          <span class="score-sep">–</span>
+          <input class="score-box" type="number" min="0" max="20" id="${key}_a" value="${aVal}" placeholder="–"
+            ${real?'disabled':''} oninput="setPick('${key}','a',this.value)"/>
         </div>
-        <span class="t-name right">${m[2]}</span>
-        <span class="flag">${m[3]}</span>`;
+        <span class="t-name">${m[2]}</span>
+        <span class="flag">${m[3]}</span>
+        ${real?`<span class="real-score">${real.h}–${real.a}</span>`:''}
+      `;
+
+      // badge
+      if(real&&(p.h!==null&&p.h!==undefined)){
+        const badge=document.createElement('span');
+        badge.className='result-badge';
+        if(status==='exact'){badge.className+=' badge-correct';badge.textContent='✓✓';}
+        else if(status==='result'){badge.className+=' badge-draw';badge.textContent='≈';}
+        else{badge.className+=' badge-wrong';badge.textContent='✗';}
+        row.appendChild(badge);
+      }
+
       body.appendChild(row);
     });
     c.appendChild(card);
   });
 }
 
-function buildChampions() {
-  const g = document.getElementById('champion-grid');
-  g.innerHTML = '';
-  CHAMPIONS.forEach(c => {
-    const btn = document.createElement('button');
-    btn.className = 'champ-btn' + (champion === c ? ' selected' : '');
-    btn.textContent = c;
-    btn.onclick = () => {
-      champion = c;
-      document.querySelectorAll('.champ-btn').forEach(b => b.classList.toggle('selected', b.textContent === c));
-    };
+function buildChampions(){
+  const g=document.getElementById('champion-grid');
+  g.innerHTML='';
+  CHAMPIONS.forEach(ch=>{
+    const btn=document.createElement('button');
+    btn.className='champ-btn'+(champion===ch?' selected':'');
+    btn.textContent=ch;
+    btn.onclick=()=>{champion=ch;document.querySelectorAll('.champ-btn').forEach(b=>b.classList.toggle('selected',b.textContent===ch));};
     g.appendChild(btn);
   });
 }
 
-function setPick(key, side, val) {
-  if (!picks[key]) picks[key] = {};
-  picks[key][side] = val === '' ? null : parseInt(val);
+function setPick(key,side,val){
+  if(!picks[key]) picks[key]={};
+  picks[key][side]=val===''?null:parseInt(val);
 }
 
-function fillInputs() {
-  Object.entries(picks).forEach(([key, val]) => {
-    const h = document.getElementById(key + '_h');
-    const a = document.getElementById(key + '_a');
-    if (h && val.h !== null && val.h !== undefined) h.value = val.h;
-    if (a && val.a !== null && val.a !== undefined) a.value = val.a;
+function fillInputs(){
+  Object.entries(picks).forEach(([key,val])=>{
+    const h=document.getElementById(key+'_h');
+    const a=document.getElementById(key+'_a');
+    if(h&&val.h!==null&&val.h!==undefined) h.value=val.h;
+    if(a&&val.a!==null&&val.a!==undefined) a.value=val.a;
   });
+  buildGroups(); // rebuild to apply colors
 }
 
-function fillChampion() {
-  document.querySelectorAll('.champ-btn').forEach(b => b.classList.toggle('selected', b.textContent === champion));
+function fillChampion(){
+  document.querySelectorAll('.champ-btn').forEach(b=>b.classList.toggle('selected',b.textContent===champion));
 }
 
-function showTab(t) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + t).classList.add('active');
+function showTab(t){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
   document.querySelectorAll('.tab')[['grupos','campeon','marcador'].indexOf(t)].classList.add('active');
-  if (t === 'marcador') loadLeaderboard();
+  if(t==='marcador') loadLeaderboard();
 }
 
-function setSaveMsg(msg, ok = false) {
-  const el = document.getElementById('save-msg');
-  el.textContent = msg;
-  el.className = 'save-msg' + (ok ? ' ok' : '');
+function setSaveMsg(msg,ok=false){
+  const el=document.getElementById('save-msg');
+  el.textContent=msg;
+  el.className='save-msg'+(ok?' ok':'');
 }
 
-let _toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+let _tt;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(_tt);
+  _tt=setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
 </body>
