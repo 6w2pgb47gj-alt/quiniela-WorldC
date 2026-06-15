@@ -480,7 +480,7 @@ async function loadAllFromSheet(){
   return rows.filter(r=>r[0]).map(r=>({
     email:r[0]||'',
     name:r[1]||'',
-    avatar:r[2]||'',
+    avatar:resolveAvatar(r[2]),
     champion:r[3]||'',
     picks:safeParseJSON(r[4])
   }));
@@ -493,7 +493,7 @@ async function loadMyData(){
   const res=await sheetsGet(SHEET_NAME+'!A'+row+':E'+row);
   if(!res.values||!res.values[0]) return null;
   const r=res.values[0];
-  return{email:r[0],name:r[1],avatar:r[2],champion:r[3],picks:safeParseJSON(r[4])};
+  return{email:r[0],name:r[1],avatar:resolveAvatar(r[2]),champion:r[3],picks:safeParseJSON(r[4])};
 }
 
 function safeParseJSON(s){try{return s?JSON.parse(s):{}}catch(e){return{};}}
@@ -573,8 +573,8 @@ function handleCredential(response){
   const p=JSON.parse(atob(response.credential.split('.')[1]));
   currentUser={name:p.name,email:p.email,picture:p.picture};
   document.getElementById('login-screen').style.display='none';
-  const saved=localStorage.getItem('quinielaPanasAvatar_'+p.email);
-  if(saved){currentAvatarSrc=saved;enterApp();}
+  const savedIdx=localStorage.getItem('quinielaPanasAvatar_'+p.email);
+  if(savedIdx!==null){currentAvatarIdx=parseInt(savedIdx);currentAvatarSrc=resolveAvatar(savedIdx);enterApp();}
   else document.getElementById('avatar-screen').style.display='flex';
 }
 
@@ -586,8 +586,7 @@ function selectAvatar(idx){
 
 function confirmAvatar(){
   if(selectedAvatarIdx===null) return;
-  currentAvatarSrc=document.querySelectorAll('.av-opt img')[selectedAvatarIdx].src;
-  localStorage.setItem('quinielaPanasAvatar_'+currentUser.email,currentAvatarSrc);
+  localStorage.setItem('quinielaPanasAvatar_'+currentUser.email, String(selectedAvatarIdx));
   document.getElementById('avatar-screen').style.display='none';
   enterApp();
 }
