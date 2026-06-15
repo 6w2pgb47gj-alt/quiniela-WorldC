@@ -379,6 +379,17 @@ let tokenClient=null,accessToken=null,currentUser=null;
 let picks={},champion=null,currentAvatarSrc=null,selectedAvatarIdx=null;
 let liveData={};
 
+const AVATAR_SRCS=[];
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.av-opt img').forEach(img=>AVATAR_SRCS.push(img.src));
+});
+function resolveAvatar(val){
+  if(val===null||val===undefined||val==='') return '';
+  const idx=parseInt(val);
+  if(isNaN(idx)) return val;
+  return AVATAR_SRCS[idx]||'';
+}
+
 // ── SCORING ───────────────────────────────────────────────────────────────────
 function scoreResult(real,pred){
   if(!real||!pred||pred.h===null||pred.h===undefined||pred.a===null||pred.a===undefined) return 'pending';
