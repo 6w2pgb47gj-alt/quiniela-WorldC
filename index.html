@@ -725,13 +725,11 @@ function buildGroups(){
       const lk=m[0]+'_'+m[2];const live=liveData[lk];
       const isLive=live&&['1H','2H','HT','ET'].includes(live.status);
       if(m[4]!==lastDate){
-        const dl=document.createElement('div');
-        const d=new Date(m[4]+'T12:00:00');
-        dl.className='date-label';
-        const dateStr=m[4].includes('T')?m[4]:m[4]+'T00:00:00';
-        const d=new Date(dateStr);
-        dl.textContent=isNaN(d)?m[4]:d.toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'short'});
-        body.appendChild(dl);lastDate=m[4];
+      const dl=document.createElement('div');
+      const d=new Date(m[4].includes('T')?m[4].split('T')[0]+'T12:00:00':m[4]+'T12:00:00');
+      dl.className='date-label';
+      dl.textContent=d.toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'short'});
+      body.appendChild(dl);lastDate=m[4];
       }
       const row=document.createElement('div');row.className='match-row';
       const isPast=new Date()>new Date(m[4].includes('T')?m[4]:m[4]+'T00:00:00');
