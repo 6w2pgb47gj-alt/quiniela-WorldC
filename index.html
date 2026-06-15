@@ -732,7 +732,7 @@ function buildGroups(){
         body.appendChild(dl);lastDate=m[4];
       }
       const row=document.createElement('div');row.className='match-row';
-      const isPast=new Date()>new Date(m[4]+'T00:00:00');
+      const isPast=new Date()>new Date(m[4]);
       if(isLive) row.classList.add('live-now');
       else if(real){
         if(status==='exact') row.classList.add('done-correct');
