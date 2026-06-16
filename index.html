@@ -376,7 +376,7 @@ const GROUPS=[
 const CHAMPIONS=["Argentina 🇦🇷","Brasil 🇧🇷","Francia 🇫🇷","Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿","España 🇪🇸","Alemania 🇩🇪","Portugal 🇵🇹","México 🇲🇽","Países Bajos 🇳🇱","Bélgica 🇧🇪","Uruguay 🇺🇾","Croacia 🇭🇷","Marruecos 🇲🇦","Senegal 🇸🇳","EE.UU. 🇺🇸","Japón 🇯🇵","Canadá 🇨🇦","Colombia 🇨🇴","Ecuador 🇪🇨","Suecia 🇸🇪","Noruega 🇳🇴","Suiza 🇨🇭","Australia 🇦🇺","Escocia 🏴󠁧󠁢󠁳󠁣󠁴󠁿"];
 
 let tokenClient=null,accessToken=null,currentUser=null;
-let picks={},champion=null,currentAvatarSrc=null,selectedAvatarIdx=null;
+let picks={},champion=null,currentAvatarSrc=null,selectedAvatarIdx=null,currentAvatarIdx=null;
 let liveData={};
 
 const AVATAR_SRCS=[];
@@ -586,6 +586,8 @@ function selectAvatar(idx){
 
 function confirmAvatar(){
   if(selectedAvatarIdx===null) return;
+  currentAvatarIdx = selectedAvatarIdx;
+  currentAvatarSrc = resolveAvatar(selectedAvatarIdx);
   localStorage.setItem('quinielaPanasAvatar_'+currentUser.email, String(selectedAvatarIdx));
   document.getElementById('avatar-screen').style.display='none';
   enterApp();
@@ -613,7 +615,13 @@ function enterApp(){
 
 function logout(){
   google.accounts.id.disableAutoSelect();
-  accessToken=null;currentUser=null;picks={};champion=null;currentAvatarSrc=null;
+  accessToken=null;
+  currentUser=null;
+  picks={};
+  champion=null;
+  currentAvatarSrc=null;
+  currentAvatarIdx=null;
+  selectedAvatarIdx=null;
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
   document.getElementById('header-user').style.display='none';
@@ -653,9 +661,10 @@ async function saveQuiniela(){
     setSaveMsg('✓ Guardado en la hoja central',true);
     showToast('¡Quiniela guardada! 🎉');
     buildGroups();
-  }catch(e){console.error(e);showToast('Error al guardar ❌');}
-  btn.disabled=false;btn.textContent='Guardar';
-}
+  }catch(e){
+    console.error(e);
+    showToast('Error: '+e.message);
+  }
 
 // ── LEADERBOARD ───────────────────────────────────────────────────────────────
 async function loadLeaderboard(){
