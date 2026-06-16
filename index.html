@@ -663,8 +663,12 @@ async function saveQuiniela(){
     buildGroups();
   }catch(e){
     console.error(e);
-    showToast('Error: '+e.message);
+    showToast('Error al guardar: '+e.message);
+    setSaveMsg('Error al guardar ❌');
+  }finally{
+    btn.disabled=false;btn.innerHTML='Guardar';
   }
+}
 
 // ── LEADERBOARD ───────────────────────────────────────────────────────────────
 async function loadLeaderboard(){
