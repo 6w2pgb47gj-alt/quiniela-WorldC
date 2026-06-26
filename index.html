@@ -553,7 +553,13 @@ window.onload=()=>{
     callback:async(resp)=>{
       if(resp.error){showToast('Error al conectar ❌');return;}
       accessToken=resp.access_token;
-      await initData();
+      if(currentAvatarSrc){
+        enterAppSkipToken();
+        await initData();
+      } else {
+        setSaveMsg('Verificando tu cuenta...');
+        await checkExistingAvatar();
+      }
     }
   });
   updateElimTab();
@@ -574,8 +580,36 @@ function handleCredential(response){
   currentUser={name:p.name,email:p.email,picture:p.picture};
   document.getElementById('login-screen').style.display='none';
   const savedIdx=localStorage.getItem('quinielaPanasAvatar_'+p.email);
-  if(savedIdx!==null){currentAvatarIdx=parseInt(savedIdx);currentAvatarSrc=resolveAvatar(savedIdx);enterApp();}
-  else document.getElementById('avatar-screen').style.display='flex';
+  if(savedIdx!==null){
+    currentAvatarIdx=parseInt(savedIdx);
+    currentAvatarSrc=resolveAvatar(savedIdx);
+  }
+  setSaveMsg('Conectando...');
+  document.getElementById('app').style.display='none';
+  tokenClient.requestAccessToken({prompt:''});
+}
+
+async function checkExistingAvatar(){
+  try{
+    const data=await loadMyData();
+    if(data&&data.avatar){
+      currentAvatarSrc=data.avatar;
+      currentAvatarIdx=isNaN(parseInt(data.avatar))?null:parseInt(data.avatar);
+      localStorage.setItem('quinielaPanasAvatar_'+currentUser.email,data.avatar);
+      enterAppSkipToken();
+      picks=data.picks||{};
+      champion=data.champion||null;
+      fillInputs();fillChampion();
+      setSaveMsg('✓ Quiniela cargada',true);
+    } else {
+      setSaveMsg('Llena tu quiniela y guarda');
+      document.getElementById('avatar-screen').style.display='flex';
+    }
+  }catch(e){
+    console.error(e);
+    setSaveMsg('Error al cargar');
+    document.getElementById('avatar-screen').style.display='flex';
+  }
 }
 
 function selectAvatar(idx){
@@ -603,6 +637,11 @@ function changeAvatar(){
 }
 
 function enterApp(){
+  enterAppSkipToken();
+  tokenClient.requestAccessToken({prompt:''});
+}
+
+function enterAppSkipToken(){
   document.getElementById('header-avatar').src=currentAvatarSrc;
   document.getElementById('header-name').textContent=currentUser.name.split(' ')[0];
   document.getElementById('header-user').style.display='flex';
@@ -610,7 +649,6 @@ function enterApp(){
   document.getElementById('app').style.display='block';
   document.getElementById('save-bar').classList.add('visible');
   buildGroups();buildChampions();
-  tokenClient.requestAccessToken({prompt:''});
 }
 
 function logout(){
