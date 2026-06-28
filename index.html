@@ -167,6 +167,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .bracket-pickrow select{flex:1;font-size:12px;padding:4px 6px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);}
 .bracket-pickrow select:disabled{color:var(--gray-400);}
 
+.bracket-score-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--gray-200);}
+.bracket-score-row input{width:42px;text-align:center;font-size:14px;font-weight:700;padding:5px 0;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);color:var(--gray-800);}
+.bracket-score-row input:focus{outline:none;border-color:#c8a84b;}
+.bracket-score-row .dash{color:var(--gray-400);font-weight:700;}
+.bracket-resulttype{display:flex;gap:4px;margin-top:6px;}
+.bracket-resulttype button{flex:1;font-size:10px;font-weight:700;padding:5px 2px;border:1px solid var(--gray-200);border-radius:6px;background:white;color:var(--gray-500);cursor:pointer;letter-spacing:.02em;}
+.bracket-resulttype button.active{background:#14532d;border-color:#14532d;color:#c8a84b;}
+.bracket-resulttype button:hover{border-color:#c8a84b;}
+.bracket-penalty-row{display:none;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
+.bracket-penalty-row.show{display:flex;}
+.bracket-penalty-row .pen-label{font-size:10px;color:var(--gray-400);font-weight:700;}
+.bracket-penalty-row input{width:36px;text-align:center;font-size:13px;font-weight:700;padding:4px 0;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);}
+.bracket-advance{margin-top:6px;font-size:10px;text-align:center;font-weight:700;color:#14532d;background:rgba(20,83,45,.08);border-radius:6px;padding:4px;}
+
 .toast{position:fixed;top:74px;right:16px;background:#14532d;border:1px solid #c8a84b;color:#c8a84b;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:200;max-width:280px;}
 .toast.show{opacity:1;}
 .spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(200,168,75,.3);border-top-color:#c8a84b;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
@@ -266,7 +280,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
   <div id="tab-eliminatorias" class="section">
     <div class="bracket-note">
-      🏆 <strong>¡Dieciseisavos de Final ya definidos!</strong> Los 16 cruces se juegan del 28 de junio al 4 de julio. Algunos rivales todavía dependen de partidos de terceros lugares por jugarse — se actualizarán en automático conforme se confirmen.
+      🏆 <strong>¡Dieciseisavos de Final confirmados!</strong> Los 16 cruces ya están 100% definidos tras el cierre completo de la fase de grupos. Se juegan del 28 de junio al 3 de julio.
     </div>
     <div id="bracket-list" class="bracket-grid"></div>
   </div>
@@ -288,27 +302,25 @@ const WC2026_ID=1;
 const WC2026_SEASON=2026;
 const SHEET_NAME='Quinielas';
 
-// ── FASE ELIMINATORIA (Dieciseisavos de Final) ─────────────────────────────────
-// Cuadro confirmado tras el cierre de la fase de grupos (27 jun 2026).
-// Algunos cruces aún dependen de partidos de terceros lugares (3CEFHI, 3EHIJK, etc.)
-// que se resuelven con la matriz oficial de 495 combinaciones de FIFA.
+// ── FASE ELIMINATORIA (Ronda de 32 / Dieciseisavos) ────────────────────────────
+// Cuadro 100% confirmado. Horarios convertidos a hora de Guadalajara, Jalisco (CST/UTC-6).
 const BRACKET_R16=[
-  {id:'r16_1',  home:{name:'Sudáfrica',flag:'🇿🇦'}, away:{name:'Canadá',flag:'🇨🇦'}, date:'28 jun, 21:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'29 jun, 19:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'29 jun, 22:30', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_4',  home:{name:'Países Bajos',flag:'🇳🇱'}, away:{name:'Marruecos',flag:'🇲🇦'}, date:'30 jun, 03:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_5',  home:{name:'Costa de Marfil',flag:'🇨🇮'}, away:{name:'Noruega',flag:'🇳🇴'}, date:'30 jun, 19:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_6',  home:{name:'Francia',flag:'🇫🇷'}, away:{name:'Suecia',flag:'🇸🇪'}, date:'30 jun, 23:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_7',  home:{name:'México',flag:'🇲🇽'}, away:{name:'Mejor 3º (C/E/F/H/I)',flag:'🏳️'}, date:'1 jul, 03:00', venue:'Por confirmar', status:'pending'},
-  {id:'r16_8',  home:{name:'Mejor 3º (E/H/I/J/K)',flag:'🏳️'}, away:{name:'Mejor 3º (E/H/I/J/K)',flag:'🏳️'}, date:'1 jul, 18:00', venue:'Por confirmar', status:'pending'},
-  {id:'r16_9',  home:{name:'Bélgica',flag:'🇧🇪'}, away:{name:'Mejor 3º (A/E/H/I/J)',flag:'🏳️'}, date:'1 jul, 22:00', venue:'Por confirmar', status:'pending'},
-  {id:'r16_10', home:{name:'Estados Unidos',flag:'🇺🇸'}, away:{name:'Bosnia y Herz.',flag:'🇧🇦'}, date:'2 jul, 02:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_11', home:{name:'España',flag:'🇪🇸'}, away:{name:'2º Grupo J (Austria/Argelia)',flag:'🏳️'}, date:'2 jul, 21:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_12', home:{name:'2º Grupo K',flag:'🏳️'}, away:{name:'2º Grupo L',flag:'🏳️'}, date:'3 jul, 01:00', venue:'Por confirmar', status:'pending'},
-  {id:'r16_13', home:{name:'Suiza',flag:'🇨🇭'}, away:{name:'Mejor 3º (E/F/G/I/J)',flag:'🏳️'}, date:'3 jul, 05:00', venue:'Por confirmar', status:'pending'},
-  {id:'r16_14', home:{name:'Australia',flag:'🇦🇺'}, away:{name:'Egipto',flag:'🇪🇬'}, date:'3 jul, 20:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_15', home:{name:'Argentina',flag:'🇦🇷'}, away:{name:'Cabo Verde',flag:'🇨🇻'}, date:'4 jul, 00:00', venue:'Por confirmar', status:'confirmed'},
-  {id:'r16_16', home:{name:'1º Grupo K',flag:'🏳️'}, away:{name:'Mejor 3º (D/E/I/J/L)',flag:'🏳️'}, date:'4 jul, 03:30', venue:'Por confirmar', status:'pending'}
+  {id:'r16_1',  home:{name:'Sudáfrica',flag:'🇿🇦'}, away:{name:'Canadá',flag:'🇨🇦'}, date:'Dom 28 jun', time:'14:00', venue:'Los Ángeles', status:'confirmed'},
+  {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'Lun 29 jun', time:'12:00', venue:'Houston', status:'confirmed'},
+  {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'Lun 29 jun', time:'15:30', venue:'Boston', status:'confirmed'},
+  {id:'r16_4',  home:{name:'Países Bajos',flag:'🇳🇱'}, away:{name:'Marruecos',flag:'🇲🇦'}, date:'Lun 29 jun', time:'20:00', venue:'Monterrey', status:'confirmed'},
+  {id:'r16_5',  home:{name:'Costa de Marfil',flag:'🇨🇮'}, away:{name:'Noruega',flag:'🇳🇴'}, date:'Mar 30 jun', time:'12:00', venue:'Dallas', status:'confirmed'},
+  {id:'r16_6',  home:{name:'Francia',flag:'🇫🇷'}, away:{name:'Suecia',flag:'🇸🇪'}, date:'Mar 30 jun', time:'16:00', venue:'Nueva Jersey', status:'confirmed'},
+  {id:'r16_7',  home:{name:'México',flag:'🇲🇽'}, away:{name:'Ecuador',flag:'🇪🇨'}, date:'Mar 30 jun', time:'20:00', venue:'Ciudad de México', status:'confirmed'},
+  {id:'r16_8',  home:{name:'Inglaterra',flag:'🏴'}, away:{name:'R.D. Congo',flag:'🇨🇩'}, date:'Mié 1 jul', time:'11:00', venue:'Atlanta', status:'confirmed'},
+  {id:'r16_9',  home:{name:'Bélgica',flag:'🇧🇪'}, away:{name:'Senegal',flag:'🇸🇳'}, date:'Mié 1 jul', time:'15:00', venue:'Seattle', status:'confirmed'},
+  {id:'r16_10', home:{name:'Estados Unidos',flag:'🇺🇸'}, away:{name:'Bosnia y Herz.',flag:'🇧🇦'}, date:'Mié 1 jul', time:'19:00', venue:'Santa Clara', status:'confirmed'},
+  {id:'r16_11', home:{name:'España',flag:'🇪🇸'}, away:{name:'Austria',flag:'🇦🇹'}, date:'Jue 2 jul', time:'14:00', venue:'Los Ángeles', status:'confirmed'},
+  {id:'r16_12', home:{name:'Portugal',flag:'🇵🇹'}, away:{name:'Croacia',flag:'🇭🇷'}, date:'Jue 2 jul', time:'18:00', venue:'Toronto', status:'confirmed'},
+  {id:'r16_13', home:{name:'Suiza',flag:'🇨🇭'}, away:{name:'Argelia',flag:'🇩🇿'}, date:'Jue 2 jul', time:'22:00', venue:'Vancouver', status:'confirmed'},
+  {id:'r16_14', home:{name:'Australia',flag:'🇦🇺'}, away:{name:'Egipto',flag:'🇪🇬'}, date:'Vie 3 jul', time:'13:00', venue:'Dallas', status:'confirmed'},
+  {id:'r16_15', home:{name:'Argentina',flag:'🇦🇷'}, away:{name:'Cabo Verde',flag:'🇨🇻'}, date:'Vie 3 jul', time:'17:00', venue:'Miami', status:'confirmed'},
+  {id:'r16_16', home:{name:'Colombia',flag:'🇨🇴'}, away:{name:'Ghana',flag:'🇬🇭'}, date:'Vie 3 jul', time:'20:30', venue:'Kansas City', status:'confirmed'}
 ];
 
 const GROUPS=[
@@ -413,7 +425,7 @@ const GROUPS=[
 const CHAMPIONS=["Argentina 🇦🇷","Brasil 🇧🇷","Francia 🇫🇷","Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿","España 🇪🇸","Alemania 🇩🇪","Portugal 🇵🇹","México 🇲🇽","Países Bajos 🇳🇱","Bélgica 🇧🇪","Uruguay 🇺🇾","Croacia 🇭🇷","Marruecos 🇲🇦","Senegal 🇸🇳","EE.UU. 🇺🇸","Japón 🇯🇵","Canadá 🇨🇦","Colombia 🇨🇴","Ecuador 🇪🇨","Suecia 🇸🇪","Noruega 🇳🇴","Suiza 🇨🇭","Australia 🇦🇺","Escocia 🏴󠁧󠁢󠁳󠁣󠁴󠁿"];
 
 let tokenClient=null,accessToken=null,currentUser=null;
-let picks={},champion=null,currentAvatarSrc=null,selectedAvatarIdx=null,currentAvatarIdx=null;
+let picks={},champion=null,currentAvatarSrc=null,selectedAvatarIdx=null,currentAvatarIdx=null,bracketPicks={};
 let liveData={};
 
 const AVATAR_SRCS=[];
@@ -501,7 +513,8 @@ async function findUserRow(email){
 async function saveToSheet(){
   await ensureSheetHeader();
   const row=await findUserRow(currentUser.email);
-  const data=[currentUser.email,currentUser.name,String(currentAvatarIdx!==null?currentAvatarIdx:''),champion||'',JSON.stringify(picks)];
+  const combinedPicks=Object.assign({},picks,{_bracket:bracketPicks});
+  const data=[currentUser.email,currentUser.name,String(currentAvatarIdx!==null?currentAvatarIdx:''),champion||'',JSON.stringify(combinedPicks)];
   if(row>0){
     await sheetsUpdate(SHEET_NAME+'!A'+row+':E'+row,[data]);
   } else {
@@ -662,6 +675,8 @@ async function initData(){
     const data=await loadMyData();
     if(data){
       picks=data.picks||{};
+      bracketPicks=picks._bracket||{};
+      delete picks._bracket;
       champion=data.champion||null;
       if(data.avatar&&!currentAvatarSrc){
         currentAvatarSrc=data.avatar;
@@ -811,24 +826,107 @@ function setPick(key,side,val){if(!picks[key]) picks[key]={};picks[key][side]=va
 function fillInputs(){Object.entries(picks).forEach(([key,val])=>{const h=document.getElementById(key+'_h');const a=document.getElementById(key+'_a');if(h&&val.h!==null&&val.h!==undefined) h.value=val.h;if(a&&val.a!==null&&val.a!==undefined) a.value=val.a;});}
 function fillChampion(){document.querySelectorAll('.champ-btn').forEach(b=>b.classList.toggle('selected',b.textContent===champion));}
 
+// Guarda el estado de cada predicción de eliminatorias: {h, a, type, penH, penA}
+// type: 'normal' | 'et' (tiempos extra) | 'pen' (penales)
+
 function buildBracket(){
   const list=document.getElementById('bracket-list');
   if(!list) return;
   list.innerHTML='';
   BRACKET_R16.forEach(m=>{
     const div=document.createElement('div');
-    div.className='bracket-match'+(m.status==='pending'?' tbd':'');
+    div.className='bracket-match';
     const homeTbd=m.home.flag==='🏳️';
     const awayTbd=m.away.flag==='🏳️';
+    const pick=bracketPicks[m.id]||{h:'',a:'',type:'normal',penH:'',penA:''};
+
     div.innerHTML=
-      '<div class="bracket-meta"><span>'+m.date+'</span><span>'+m.venue+'</span></div>'+
+      '<div class="bracket-meta"><span>'+m.date+' · '+m.time+' (Gdl)</span><span>'+m.venue+'</span></div>'+
       '<div class="bracket-body">'+
         '<div class="bracket-team"><span class="flag">'+m.home.flag+'</span><span class="tname'+(homeTbd?' bracket-tbd':'')+'">'+m.home.name+'</span></div>'+
         '<div class="bracket-vs">VS</div>'+
         '<div class="bracket-team"><span class="flag">'+m.away.flag+'</span><span class="tname'+(awayTbd?' bracket-tbd':'')+'">'+m.away.name+'</span></div>'+
+        '<div class="bracket-score-row">'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_h" value="'+pick.h+'" onchange="updateBracketPick(\''+m.id+'\')">'+
+          '<span class="dash">–</span>'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_a" value="'+pick.a+'" onchange="updateBracketPick(\''+m.id+'\')">'+
+        '</div>'+
+        '<div class="bracket-resulttype" id="'+m.id+'_typerow">'+
+          '<button type="button" class="'+(pick.type==='normal'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'normal\')">Tiempo normal</button>'+
+          '<button type="button" class="'+(pick.type==='et'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'et\')">T. extra</button>'+
+          '<button type="button" class="'+(pick.type==='pen'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'pen\')">Penales</button>'+
+        '</div>'+
+        '<div class="bracket-penalty-row'+(pick.type==='pen'?' show':'')+'" id="'+m.id+'_penrow">'+
+          '<span class="pen-label">Penales:</span>'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_penh" value="'+pick.penH+'" onchange="updateBracketPick(\''+m.id+'\')">'+
+          '<span class="dash">–</span>'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_pena" value="'+pick.penA+'" onchange="updateBracketPick(\''+m.id+'\')">'+
+        '</div>'+
+        '<div class="bracket-advance" id="'+m.id+'_advance" style="display:none;"></div>'+
       '</div>';
     list.appendChild(div);
+    renderBracketAdvance(m.id);
   });
+}
+
+function setBracketType(id,type){
+  if(!bracketPicks[id]) bracketPicks[id]={h:'',a:'',type:'normal',penH:'',penA:''};
+  bracketPicks[id].type=type;
+  document.getElementById(id+'_typerow').querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  const idx={normal:0,et:1,pen:2}[type];
+  document.getElementById(id+'_typerow').querySelectorAll('button')[idx].classList.add('active');
+  const penRow=document.getElementById(id+'_penrow');
+  if(type==='pen') penRow.classList.add('show'); else penRow.classList.remove('show');
+  renderBracketAdvance(id);
+}
+
+function updateBracketPick(id){
+  if(!bracketPicks[id]) bracketPicks[id]={h:'',a:'',type:'normal',penH:'',penA:''};
+  const h=document.getElementById(id+'_h').value;
+  const a=document.getElementById(id+'_a').value;
+  bracketPicks[id].h=h;
+  bracketPicks[id].a=a;
+  const penH=document.getElementById(id+'_penh');
+  const penA=document.getElementById(id+'_pena');
+  if(penH&&penA){
+    bracketPicks[id].penH=penH.value;
+    bracketPicks[id].penA=penA.value;
+  }
+  renderBracketAdvance(id);
+}
+
+function renderBracketAdvance(id){
+  const m=BRACKET_R16.find(x=>x.id===id);
+  if(!m) return;
+  const adv=document.getElementById(id+'_advance');
+  if(!adv) return;
+  const pick=bracketPicks[id];
+  if(!pick||pick.h===''||pick.a===''){ adv.style.display='none'; return; }
+  const h=parseInt(pick.h),a=parseInt(pick.a);
+  let winnerName=null;
+  if(h>a) winnerName=m.home.name;
+  else if(a>h) winnerName=m.away.name;
+  else {
+    // Empate en 90' -> solo se puede avanzar vía tiempos extra ganados o penales
+    if(pick.type==='pen'&&pick.penH!==''&&pick.penA!==''){
+      const ph=parseInt(pick.penH),pa=parseInt(pick.penA);
+      if(ph>pa) winnerName=m.home.name;
+      else if(pa>ph) winnerName=m.away.name;
+    }
+  }
+  if(winnerName){
+    let suffix='';
+    if(pick.type==='et') suffix=' (en tiempos extra)';
+    if(pick.type==='pen') suffix=' (en penales '+pick.penH+'-'+pick.penA+')';
+    adv.textContent='✓ Avanza: '+winnerName+suffix;
+    adv.style.display='block';
+  } else {
+    adv.style.display='none';
+  }
+}
+
+function loadBracketPicks(data){
+  bracketPicks=data||{};
 }
 
 function showTab(t){
