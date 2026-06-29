@@ -136,6 +136,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .lb-detail.open{display:block;}
 .lb-champ{font-size:13px;color:var(--gray-600);margin-bottom:10px;padding:8px 12px;background:var(--gold-light);border-radius:6px;border-left:3px solid #c8a84b;}
 .lb-champ strong{color:var(--gold);font-weight:700;}
+.lb-round-label{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 4px 2px;}
+.lb-round-label:first-of-type{margin-top:4px;}
 .matches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:3px;}
 .mpill{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:3px 7px;border-radius:5px;background:var(--gray-50);}
 .mpill.correct{background:#f0fdf4;}.mpill.result{background:#fefce8;}.mpill.wrong{background:#fef2f2;}
@@ -153,6 +155,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .empty-state .icon{font-size:40px;display:block;margin-bottom:10px;}
 
 .bracket-note{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.3);border-radius:var(--radius);padding:10px 14px;margin-bottom:1rem;font-size:12px;color:rgba(200,168,75,.85);line-height:1.5;}
+.bracket-round-tabs{display:flex;gap:6px;margin-bottom:1rem;overflow-x:auto;padding-bottom:2px;}
+.bracket-round-tab{flex-shrink:0;font-size:12px;font-weight:700;padding:7px 14px;border-radius:20px;border:1px solid rgba(200,168,75,.3);background:white;color:var(--gray-500);cursor:pointer;white-space:nowrap;}
+.bracket-round-tab.active{background:#14532d;border-color:#14532d;color:#c8a84b;}
+.bracket-round-tab:hover{border-color:#c8a84b;}
 .bracket-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.75rem;}
 .bracket-match{background:white;border:1px solid rgba(200,168,75,.25);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.12);}
 .bracket-match.tbd{opacity:.75;}
@@ -250,6 +256,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button class="tab" onclick="showTab('campeon')">Campeón</button>
     <button class="tab" onclick="showTab('marcador')">Marcador</button>
     <button class="tab" id="tab-elim-btn" onclick="showTab('eliminatorias')">Eliminatorias</button>
+    <button class="tab" onclick="showTab('mispicks')">Mis Picks</button>
   </div>
 
   <div id="tab-grupos" class="section active">
@@ -282,7 +289,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="bracket-note">
       🏆 <strong>¡Dieciseisavos de Final confirmados!</strong> Los 16 cruces ya están 100% definidos tras el cierre completo de la fase de grupos. Se juegan del 28 de junio al 3 de julio.
     </div>
-    <div id="bracket-list" class="bracket-grid"></div>
+    <div id="bracket-list"></div>
+  </div>
+
+  <div id="tab-mispicks" class="section">
+    <div class="bracket-note">
+      📋 Aquí ves todas tus predicciones, organizadas por ronda.
+    </div>
+    <div id="mispicks-list"></div>
   </div>
 </div>
 
@@ -305,7 +319,7 @@ const SHEET_NAME='Quinielas';
 // ── FASE ELIMINATORIA (Ronda de 32 / Dieciseisavos) ────────────────────────────
 // Cuadro 100% confirmado. Horarios convertidos a hora de Guadalajara, Jalisco (CST/UTC-6).
 const BRACKET_R16=[
-  {id:'r16_1',  home:{name:'Sudáfrica',flag:'🇿🇦'}, away:{name:'Canadá',flag:'🇨🇦'}, date:'Dom 28 jun', time:'13:00', venue:'Los Ángeles', status:'confirmed', real:{h:0, a:1, type:'et'}},
+  {id:'r16_1',  home:{name:'Sudáfrica',flag:'🇿🇦'}, away:{name:'Canadá',flag:'🇨🇦'}, date:'Dom 28 jun', time:'13:00', venue:'Los Ángeles', status:'confirmed', real:null},
   {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'Lun 29 jun', time:'11:00', venue:'Houston', status:'confirmed', real:null},
   {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'Lun 29 jun', time:'14:30', venue:'Boston', status:'confirmed', real:null},
   {id:'r16_4',  home:{name:'Países Bajos',flag:'🇳🇱'}, away:{name:'Marruecos',flag:'🇲🇦'}, date:'Lun 29 jun', time:'19:00', venue:'Monterrey', status:'confirmed', real:null},
@@ -321,6 +335,47 @@ const BRACKET_R16=[
   {id:'r16_14', home:{name:'Australia',flag:'🇦🇺'}, away:{name:'Egipto',flag:'🇪🇬'}, date:'Vie 3 jul', time:'12:00', venue:'Dallas', status:'confirmed', real:null},
   {id:'r16_15', home:{name:'Argentina',flag:'🇦🇷'}, away:{name:'Cabo Verde',flag:'🇨🇻'}, date:'Vie 3 jul', time:'16:00', venue:'Miami', status:'confirmed', real:null},
   {id:'r16_16', home:{name:'Colombia',flag:'🇨🇴'}, away:{name:'Ghana',flag:'🇬🇭'}, date:'Vie 3 jul', time:'19:30', venue:'Kansas City', status:'confirmed', real:null}
+];
+
+// ── OCTAVOS DE FINAL ────────────────────────────────────────────────────────────
+// Cada cruce toma el ganador de 2 partidos consecutivos de dieciseisavos (orden fijo FIFA).
+const BRACKET_R8=[
+  {id:'r8_1', from:['r16_1','r16_4'],  date:'Sáb 4 jul', time:'11:00', venue:'Houston', real:null},
+  {id:'r8_2', from:['r16_3','r16_6'],  date:'Sáb 4 jul', time:'15:00', venue:'Filadelfia', real:null},
+  {id:'r8_3', from:['r16_2','r16_5'],  date:'Dom 5 jul', time:'15:00', venue:'Nueva Jersey', real:null},
+  {id:'r8_4', from:['r16_7','r16_8'],  date:'Dom 5 jul', time:'19:00', venue:'Ciudad de México', real:null},
+  {id:'r8_5', from:['r16_12','r16_11'],date:'Lun 6 jul', time:'13:00', venue:'Arlington', real:null},
+  {id:'r8_6', from:['r16_10','r16_9'], date:'Lun 6 jul', time:'19:00', venue:'Seattle', real:null},
+  {id:'r8_7', from:['r16_15','r16_14'],date:'Mar 7 jul', time:'10:00', venue:'Atlanta', real:null},
+  {id:'r8_8', from:['r16_13','r16_16'],date:'Mar 7 jul', time:'14:00', venue:'Vancouver', real:null}
+];
+
+// ── CUARTOS DE FINAL ─────────────────────────────────────────────────────────────
+const BRACKET_QF=[
+  {id:'qf_1', from:['r8_1','r8_2'], date:'Jue 9 jul', time:'13:00', venue:'Boston', real:null},
+  {id:'qf_2', from:['r8_3','r8_4'], date:'Vie 10 jul', time:'13:00', venue:'Miami', real:null},
+  {id:'qf_3', from:['r8_5','r8_6'], date:'Sáb 11 jul', time:'11:00', venue:'Kansas City', real:null},
+  {id:'qf_4', from:['r8_7','r8_8'], date:'Sáb 11 jul', time:'15:00', venue:'Dallas', real:null}
+];
+
+// ── SEMIFINALES ──────────────────────────────────────────────────────────────────
+const BRACKET_SF=[
+  {id:'sf_1', from:['qf_1','qf_2'], date:'Mar 14 jul', time:'13:00', venue:'Dallas', real:null},
+  {id:'sf_2', from:['qf_3','qf_4'], date:'Mié 15 jul', time:'13:00', venue:'Atlanta', real:null}
+];
+
+// ── FINAL ────────────────────────────────────────────────────────────────────────
+const BRACKET_FINAL=[
+  {id:'final_1', from:['sf_1','sf_2'], date:'Dom 19 jul', time:'13:00', venue:'Nueva Jersey', real:null}
+];
+
+// Lista de todas las rondas con metadatos para renderizado genérico
+const BRACKET_ROUNDS=[
+  {key:'r16',   label:'16vos de Final',     data:BRACKET_R16,   isBase:true},
+  {key:'r8',    label:'8vos de Final',      data:BRACKET_R8,    isBase:false},
+  {key:'qf',    label:'Cuartos de Final',   data:BRACKET_QF,    isBase:false},
+  {key:'sf',    label:'Semifinales',        data:BRACKET_SF,    isBase:false},
+  {key:'final', label:'Final',              data:BRACKET_FINAL, isBase:false}
 ];
 
 const GROUPS=[
@@ -464,6 +519,10 @@ function calcPoints(picksObj){
 }
 
 // Determina quién avanza dado un objeto {h,a,type,penH,penA}
+// Mapa id -> partido, para buscar rápido en cualquier ronda
+const BRACKET_ALL_MATCHES={};
+BRACKET_ROUNDS.forEach(r=>r.data.forEach(m=>BRACKET_ALL_MATCHES[m.id]=m));
+
 function bracketWinner(m,pick){
   if(!pick||pick.h===''||pick.h===null||pick.h===undefined||pick.a===''||pick.a===null||pick.a===undefined) return null;
   const h=parseInt(pick.h),a=parseInt(pick.a);
@@ -475,6 +534,40 @@ function bracketWinner(m,pick){
     if(pa>ph) return 'away';
   }
   return null; // empate sin definir (tiempo normal sin penales/extra)
+}
+
+function resolveSlot(fromMatchId, bpicksObj, useReal){
+  const m=BRACKET_ALL_MATCHES[fromMatchId];
+  if(!m) return {name:'Por confirmar',flag:'🏳️'};
+  if(m.home&&m.away){
+    // Partido base de 16vos: resolver ganador
+    const source=useReal?m.real:(bpicksObj[m.id]||null);
+    const w=bracketWinner(m,source);
+    if(w==='home') return m.home;
+    if(w==='away') return m.away;
+    return {name:'Por confirmar',flag:'🏳️'};
+  } else {
+    // Partido derivado: resolver recursivamente
+    const homeTeam=resolveSlot(m.from[0],bpicksObj,useReal);
+    const awayTeam=resolveSlot(m.from[1],bpicksObj,useReal);
+    const source=useReal?m.real:(bpicksObj[m.id]||null);
+    const w=bracketWinner(m,source);
+    if(w==='home') return homeTeam;
+    if(w==='away') return awayTeam;
+    return {name:'Por confirmar',flag:'🏳️'};
+  }
+}
+
+// Devuelve {home, away} para cualquier partido (base o derivado), usando resultados reales
+// cuando existen, y los picks del usuario para llenar lo que falte.
+function getMatchTeams(m, bpicksObj){
+  if(m.home&&m.away) return {home:m.home, away:m.away};
+  const homeReal=resolveSlot(m.from[0],bpicksObj,true);
+  const awayReal=resolveSlot(m.from[1],bpicksObj,true);
+  // Si el real no resolvió (partido anterior sin resultado real), usar el pick del usuario como respaldo
+  const home=homeReal.name!=='Por confirmar'?homeReal:resolveSlot(m.from[0],bpicksObj,false);
+  const away=awayReal.name!=='Por confirmar'?awayReal:resolveSlot(m.from[1],bpicksObj,false);
+  return {home,away};
 }
 
 // Puntaje de eliminatorias: 3 pts si acierta marcador Y quién avanza, 1 pt si solo acierta quién avanza, 0 si falla
@@ -491,13 +584,15 @@ function bracketScoreResult(m,pick){
 
 function calcBracketPoints(bpicksObj){
   let pts=0,exact=0,result=0,wrong=0,pending=0;
-  BRACKET_R16.forEach(m=>{
-    const p=bpicksObj[m.id];
-    const st=bracketScoreResult(m,p);
-    if(st==='exact'){pts+=3;exact++;}
-    else if(st==='result'){pts+=1;result++;}
-    else if(st==='wrong') wrong++;
-    else pending++;
+  BRACKET_ROUNDS.forEach(round=>{
+    round.data.forEach(m=>{
+      const p=bpicksObj[m.id];
+      const st=bracketScoreResult(m,p);
+      if(st==='exact'){pts+=3;exact++;}
+      else if(st==='result'){pts+=1;result++;}
+      else if(st==='wrong') wrong++;
+      else pending++;
+    });
   });
   return{pts,exact,result,wrong,pending};
 }
@@ -784,7 +879,9 @@ async function loadLeaderboard(){
         '<div class="lb-detail">'+
           '<div class="lb-champ">🏆 Campeón: <strong>'+(u.champion||'No elegido')+'</strong></div>'+
           '<div class="lb-champ">⚽ Grupos: <strong>'+u.gsc.pts+' pts</strong> &nbsp;|&nbsp; 🏆 Eliminatorias: <strong>'+u.bsc.pts+' pts</strong></div>'+
+          '<div class="lb-round-label">Fase de Grupos</div>'+
           '<div class="matches-grid">'+renderMatchesLB(u.groupPicks)+'</div>'+
+          renderBracketLB(u.bpicks)+
         '</div>';
       list.appendChild(div);
     });
@@ -805,6 +902,29 @@ function renderMatchesLB(p){
     });
   });
   return html||'<span style="font-size:12px;color:#9ca3af">Sin predicciones</span>';
+}
+
+// Muestra los picks de eliminatorias de un usuario, agrupados por ronda (16vos, 8vos, 4tos, Semis, Final)
+function renderBracketLB(bpicksObj){
+  let out='';
+  BRACKET_ROUNDS.forEach(round=>{
+    let roundHtml='';
+    round.data.forEach(m=>{
+      const pick=bpicksObj[m.id];
+      if(!pick||pick.h===''||pick.h===null||pick.h===undefined||pick.a===''||pick.a===null||pick.a===undefined) return;
+      const teams=getMatchTeams(m,bpicksObj);
+      const st=bracketScoreResult(m,pick);
+      const cls=st==='exact'?'correct':st==='result'?'result':st==='wrong'?'wrong':'';
+      let scoreLabel=pick.h+'–'+pick.a;
+      if(pick.type==='et') scoreLabel+=' (T.E.)';
+      if(pick.type==='pen') scoreLabel+=' (pen. '+pick.penH+'-'+pick.penA+')';
+      roundHtml+='<div class="mpill '+cls+'"><span>'+teams.home.flag+' '+teams.home.name+' v '+teams.away.name+' '+teams.away.flag+'</span><span class="mscore">'+scoreLabel+'</span></div>';
+    });
+    if(roundHtml){
+      out+='<div class="lb-round-label">'+round.label+'</div><div class="matches-grid">'+roundHtml+'</div>';
+    }
+  });
+  return out||'<span style="font-size:12px;color:#9ca3af">Sin predicciones de eliminatorias</span>';
 }
 
 // ── UI ────────────────────────────────────────────────────────────────────────
@@ -875,18 +995,31 @@ function fillChampion(){document.querySelectorAll('.champ-btn').forEach(b=>b.cla
 // Guarda el estado de cada predicción de eliminatorias: {h, a, type, penH, penA}
 // type: 'normal' | 'et' (tiempos extra) | 'pen' (penales)
 
+let activeBracketRound='r16';
+
 function buildBracket(){
   const list=document.getElementById('bracket-list');
   if(!list) return;
-  list.innerHTML='';
-  BRACKET_R16.forEach(m=>{
-    const div=document.createElement('div');
-    div.className='bracket-match';
-    const homeTbd=m.home.flag==='🏳️';
-    const awayTbd=m.away.flag==='🏳️';
+
+  // Sub-tabs de ronda
+  let tabsHtml='<div class="bracket-round-tabs">';
+  BRACKET_ROUNDS.forEach(r=>{
+    tabsHtml+='<button type="button" class="bracket-round-tab'+(activeBracketRound===r.key?' active':'')+'" onclick="switchBracketRound(\''+r.key+'\')">'+r.label+'</button>';
+  });
+  tabsHtml+='</div>';
+
+  const round=BRACKET_ROUNDS.find(r=>r.key===activeBracketRound)||BRACKET_ROUNDS[0];
+  let matchesHtml='<div class="bracket-grid">';
+
+  round.data.forEach(m=>{
+    const teams=getMatchTeams(m,bracketPicks);
+    const homeTbd=teams.home.flag==='🏳️';
+    const awayTbd=teams.away.flag==='🏳️';
     const pick=bracketPicks[m.id]||{h:'',a:'',type:'normal',penH:'',penA:''};
     const real=m.real;
     const locked=!!real;
+    const teamsUnresolved=homeTbd||awayTbd; // no se puede predecir si aún no se sabe quién juega
+    const inputsDisabled=locked||teamsUnresolved;
     let realLabel='';
     if(real){
       realLabel=real.h+'–'+real.a;
@@ -894,33 +1027,41 @@ function buildBracket(){
       if(real.type==='pen') realLabel+=' (pen. '+real.penH+'-'+real.penA+')';
     }
 
-    div.innerHTML=
+    matchesHtml+=
+      '<div class="bracket-match">'+
       '<div class="bracket-meta"><span>'+m.date+' · '+m.time+' (Gdl)</span><span>'+m.venue+'</span></div>'+
       '<div class="bracket-body">'+
-        '<div class="bracket-team"><span class="flag">'+m.home.flag+'</span><span class="tname'+(homeTbd?' bracket-tbd':'')+'">'+m.home.name+'</span>'+(real?'<span class="real-score">'+realLabel+'</span>':'')+'</div>'+
+        '<div class="bracket-team"><span class="flag">'+teams.home.flag+'</span><span class="tname'+(homeTbd?' bracket-tbd':'')+'">'+teams.home.name+'</span>'+(real?'<span class="real-score">'+realLabel+'</span>':'')+'</div>'+
         '<div class="bracket-vs">VS</div>'+
-        '<div class="bracket-team"><span class="flag">'+m.away.flag+'</span><span class="tname'+(awayTbd?' bracket-tbd':'')+'">'+m.away.name+'</span></div>'+
+        '<div class="bracket-team"><span class="flag">'+teams.away.flag+'</span><span class="tname'+(awayTbd?' bracket-tbd':'')+'">'+teams.away.name+'</span></div>'+
         '<div class="bracket-score-row">'+
-          '<input type="number" min="0" max="20" id="'+m.id+'_h" value="'+pick.h+'"'+(locked?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_h" value="'+pick.h+'"'+(inputsDisabled?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
           '<span class="dash">–</span>'+
-          '<input type="number" min="0" max="20" id="'+m.id+'_a" value="'+pick.a+'"'+(locked?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_a" value="'+pick.a+'"'+(inputsDisabled?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
         '</div>'+
         '<div class="bracket-resulttype" id="'+m.id+'_typerow">'+
-          '<button type="button" '+(locked?'disabled ':'')+'class="'+(pick.type==='normal'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'normal\')">Tiempo normal</button>'+
-          '<button type="button" '+(locked?'disabled ':'')+'class="'+(pick.type==='et'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'et\')">T. extra</button>'+
-          '<button type="button" '+(locked?'disabled ':'')+'class="'+(pick.type==='pen'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'pen\')">Penales</button>'+
+          '<button type="button" '+(inputsDisabled?'disabled ':'')+'class="'+(pick.type==='normal'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'normal\')">Tiempo normal</button>'+
+          '<button type="button" '+(inputsDisabled?'disabled ':'')+'class="'+(pick.type==='et'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'et\')">T. extra</button>'+
+          '<button type="button" '+(inputsDisabled?'disabled ':'')+'class="'+(pick.type==='pen'?'active':'')+'" onclick="setBracketType(\''+m.id+'\',\'pen\')">Penales</button>'+
         '</div>'+
         '<div class="bracket-penalty-row'+(pick.type==='pen'?' show':'')+'" id="'+m.id+'_penrow">'+
           '<span class="pen-label">Penales:</span>'+
-          '<input type="number" min="0" max="20" id="'+m.id+'_penh" value="'+pick.penH+'"'+(locked?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_penh" value="'+pick.penH+'"'+(inputsDisabled?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
           '<span class="dash">–</span>'+
-          '<input type="number" min="0" max="20" id="'+m.id+'_pena" value="'+pick.penA+'"'+(locked?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
+          '<input type="number" min="0" max="20" id="'+m.id+'_pena" value="'+pick.penA+'"'+(inputsDisabled?' disabled':'')+' onchange="updateBracketPick(\''+m.id+'\')">'+
         '</div>'+
         '<div class="bracket-advance" id="'+m.id+'_advance" style="display:none;"></div>'+
-      '</div>';
-    list.appendChild(div);
-    renderBracketAdvance(m.id);
+      '</div></div>';
   });
+  matchesHtml+='</div>';
+
+  list.innerHTML=tabsHtml+matchesHtml;
+  round.data.forEach(m=>renderBracketAdvance(m.id));
+}
+
+function switchBracketRound(key){
+  activeBracketRound=key;
+  buildBracket();
 }
 
 function setBracketType(id,type){
@@ -932,6 +1073,7 @@ function setBracketType(id,type){
   const penRow=document.getElementById(id+'_penrow');
   if(type==='pen') penRow.classList.add('show'); else penRow.classList.remove('show');
   renderBracketAdvance(id);
+  buildBracket(); // los avances pueden destrabar equipos en rondas posteriores
 }
 
 function updateBracketPick(id){
@@ -947,17 +1089,19 @@ function updateBracketPick(id){
     bracketPicks[id].penA=penA.value;
   }
   renderBracketAdvance(id);
+  buildBracket(); // refresca para que rondas posteriores muestren los equipos recién definidos
 }
 
 function renderBracketAdvance(id){
-  const m=BRACKET_R16.find(x=>x.id===id);
+  const m=BRACKET_ALL_MATCHES[id];
   if(!m) return;
   const adv=document.getElementById(id+'_advance');
   if(!adv) return;
   const pick=bracketPicks[id];
   const winnerSide=bracketWinner(m,pick);
   if(!winnerSide){ adv.style.display='none'; return; }
-  const winnerName=winnerSide==='home'?m.home.name:m.away.name;
+  const teams=getMatchTeams(m,bracketPicks);
+  const winnerName=winnerSide==='home'?teams.home.name:teams.away.name;
   let suffix='';
   if(pick.type==='et') suffix=' (en tiempos extra)';
   if(pick.type==='pen') suffix=' (en penales '+pick.penH+'-'+pick.penA+')';
@@ -982,11 +1126,12 @@ function showTab(t){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
-  const tabs=['grupos','campeon','marcador','eliminatorias'];
+  const tabs=['grupos','campeon','marcador','eliminatorias','mispicks'];
   const el=document.querySelectorAll('.tab')[tabs.indexOf(t)];
   if(el) el.classList.add('active');
   if(t==='marcador') loadLeaderboard();
   if(t==='eliminatorias') buildBracket();
+  if(t==='mispicks') buildMisPicks();
 }
 
 function setSaveMsg(msg,ok=false){const el=document.getElementById('save-msg');el.textContent=msg;el.className='save-msg'+(ok?' ok':'');}
