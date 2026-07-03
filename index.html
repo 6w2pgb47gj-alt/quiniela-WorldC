@@ -320,15 +320,15 @@ const SHEET_NAME='Quinielas';
 // Cuadro 100% confirmado. Horarios convertidos a hora de Guadalajara, Jalisco (CST/UTC-6).
 const BRACKET_R16=[
   {id:'r16_1',  home:{name:'Sudáfrica',flag:'🇿🇦'}, away:{name:'Canadá',flag:'🇨🇦'}, date:'Dom 28 jun', time:'13:00', venue:'Los Ángeles', status:'confirmed', real:{h:0, a:1, type:'normal'}},
-  {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'Lun 29 jun', time:'11:00', venue:'Houston', status:'confirmed', real:null},
-  {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'Lun 29 jun', time:'14:30', venue:'Boston', status:'confirmed', real:null},
-  {id:'r16_4',  home:{name:'Países Bajos',flag:'🇳🇱'}, away:{name:'Marruecos',flag:'🇲🇦'}, date:'Lun 29 jun', time:'19:00', venue:'Monterrey', status:'confirmed', real:null},
-  {id:'r16_5',  home:{name:'Costa de Marfil',flag:'🇨🇮'}, away:{name:'Noruega',flag:'🇳🇴'}, date:'Mar 30 jun', time:'11:00', venue:'Dallas', status:'confirmed', real:null},
-  {id:'r16_6',  home:{name:'Francia',flag:'🇫🇷'}, away:{name:'Suecia',flag:'🇸🇪'}, date:'Mar 30 jun', time:'15:00', venue:'Nueva Jersey', status:'confirmed', real:null},
-  {id:'r16_7',  home:{name:'México',flag:'🇲🇽'}, away:{name:'Ecuador',flag:'🇪🇨'}, date:'Mar 30 jun', time:'19:00', venue:'Ciudad de México', status:'confirmed', real:null},
-  {id:'r16_8',  home:{name:'Inglaterra',flag:'🏴'}, away:{name:'R.D. Congo',flag:'🇨🇩'}, date:'Mié 1 jul', time:'10:00', venue:'Atlanta', status:'confirmed', real:null},
-  {id:'r16_9',  home:{name:'Bélgica',flag:'🇧🇪'}, away:{name:'Senegal',flag:'🇸🇳'}, date:'Mié 1 jul', time:'14:00', venue:'Seattle', status:'confirmed', real:null},
-  {id:'r16_10', home:{name:'Estados Unidos',flag:'🇺🇸'}, away:{name:'Bosnia y Herz.',flag:'🇧🇦'}, date:'Mié 1 jul', time:'18:00', venue:'Santa Clara', status:'confirmed', real:null},
+  {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'Lun 29 jun', time:'11:00', venue:'Houston', status:'confirmed', real:{h:3, a:1, type:'normal'}},
+  {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'Lun 29 jun', time:'14:30', venue:'Boston', status:'confirmed', real:{h:2, a:0, type:'normal'}},
+  {id:'r16_4',  home:{name:'Países Bajos',flag:'🇳🇱'}, away:{name:'Marruecos',flag:'🇲🇦'}, date:'Lun 29 jun', time:'19:00', venue:'Monterrey', status:'confirmed', real:{h:2, a:2, type:'pen', penH:4, penA:3}},
+  {id:'r16_5',  home:{name:'Costa de Marfil',flag:'🇨🇮'}, away:{name:'Noruega',flag:'🇳🇴'}, date:'Mar 30 jun', time:'11:00', venue:'Dallas', status:'confirmed', real:{h:1, a:2, type:'normal'}},
+  {id:'r16_6',  home:{name:'Francia',flag:'🇫🇷'}, away:{name:'Suecia',flag:'🇸🇪'}, date:'Mar 30 jun', time:'15:00', venue:'Nueva Jersey', status:'confirmed', real:{h:3, a:0, type:'normal'}},
+  {id:'r16_7',  home:{name:'México',flag:'🇲🇽'}, away:{name:'Ecuador',flag:'🇪🇨'}, date:'Mar 30 jun', time:'19:00', venue:'Ciudad de México', status:'confirmed', real:{h:2, a:1, type:'normal'}},
+  {id:'r16_8',  home:{name:'Inglaterra',flag:'🏴'}, away:{name:'R.D. Congo',flag:'🇨🇩'}, date:'Mié 1 jul', time:'10:00', venue:'Atlanta', status:'confirmed', real:{h:2, a:1, type:'normal'}},
+  {id:'r16_9',  home:{name:'Bélgica',flag:'🇧🇪'}, away:{name:'Senegal',flag:'🇸🇳'}, date:'Mié 1 jul', time:'14:00', venue:'Seattle', status:'confirmed', real:{h:1, a:3, type:'normal'}},
+  {id:'r16_10', home:{name:'Estados Unidos',flag:'🇺🇸'}, away:{name:'Bosnia y Herz.',flag:'🇧🇦'}, date:'Mié 1 jul', time:'18:00', venue:'Santa Clara', status:'confirmed', real:{h:2, a:0, type:'normal'}},
   {id:'r16_11', home:{name:'España',flag:'🇪🇸'}, away:{name:'Austria',flag:'🇦🇹'}, date:'Jue 2 jul', time:'13:00', venue:'Los Ángeles', status:'confirmed', real:null},
   {id:'r16_12', home:{name:'Portugal',flag:'🇵🇹'}, away:{name:'Croacia',flag:'🇭🇷'}, date:'Jue 2 jul', time:'17:00', venue:'Toronto', status:'confirmed', real:null},
   {id:'r16_13', home:{name:'Suiza',flag:'🇨🇭'}, away:{name:'Argelia',flag:'🇩🇿'}, date:'Jue 2 jul', time:'21:00', venue:'Vancouver', status:'confirmed', real:null},
@@ -570,31 +570,39 @@ function getMatchTeams(m, bpicksObj){
   return {home,away};
 }
 
-// Puntaje de eliminatorias: 3 pts si acierta marcador Y quién avanza, 1 pt si solo acierta quién avanza, 0 si falla
+// Puntaje de eliminatorias:
+// - 3 pts: marcador exacto + quién avanza
+// - 1 pt: solo acierta quién avanza
+// - +1 pt extra: acierta el tipo de resolución (normal / tiempos extra / penales)
 function bracketScoreResult(m,pick){
-  if(!m.real) return 'pending';
-  if(!pick||pick.h===''||pick.h===null||pick.h===undefined||pick.a===''||pick.a===null||pick.a===undefined) return 'pending';
+  if(!m.real) return {status:'pending', pts:0};
+  if(!pick||pick.h===''||pick.h===null||pick.h===undefined||pick.a===''||pick.a===null||pick.a===undefined) return {status:'pending', pts:0};
   const realWinner=bracketWinner(m,m.real);
   const pickWinner=bracketWinner(m,pick);
   const exactScore=(parseInt(pick.h)===parseInt(m.real.h)&&parseInt(pick.a)===parseInt(m.real.a));
-  if(exactScore&&realWinner===pickWinner) return 'exact';
-  if(realWinner&&realWinner===pickWinner) return 'result';
-  return 'wrong';
+  const typeBonus=(pick.type&&m.real.type&&pick.type===m.real.type)?1:0;
+  if(exactScore&&realWinner===pickWinner){
+    return {status:'exact', pts:3+typeBonus};
+  }
+  if(realWinner&&realWinner===pickWinner){
+    return {status:'result', pts:1+typeBonus};
+  }
+  return {status:'wrong', pts:0};
 }
 
 function calcBracketPoints(bpicksObj){
-  let pts=0,exact=0,result=0,wrong=0,pending=0;
+  let pts=0,exact=0,result=0,wrong=0,pending=0,typeBonus=0;
   BRACKET_ROUNDS.forEach(round=>{
     round.data.forEach(m=>{
       const p=bpicksObj[m.id];
-      const st=bracketScoreResult(m,p);
-      if(st==='exact'){pts+=3;exact++;}
-      else if(st==='result'){pts+=1;result++;}
-      else if(st==='wrong') wrong++;
+      const sc=bracketScoreResult(m,p);
+      if(sc.status==='exact'){pts+=sc.pts;exact++;if(sc.pts>3)typeBonus++;}
+      else if(sc.status==='result'){pts+=sc.pts;result++;if(sc.pts>1)typeBonus++;}
+      else if(sc.status==='wrong') wrong++;
       else pending++;
     });
   });
-  return{pts,exact,result,wrong,pending};
+  return{pts,exact,result,wrong,pending,typeBonus};
 }
 
 // ── SHEETS API ────────────────────────────────────────────────────────────────
@@ -913,12 +921,14 @@ function renderBracketLB(bpicksObj){
       const pick=bpicksObj[m.id];
       if(!pick||pick.h===''||pick.h===null||pick.h===undefined||pick.a===''||pick.a===null||pick.a===undefined) return;
       const teams=getMatchTeams(m,bpicksObj);
-      const st=bracketScoreResult(m,pick);
-      const cls=st==='exact'?'correct':st==='result'?'result':st==='wrong'?'wrong':'';
+      const sc=bracketScoreResult(m,pick);
+      const cls=sc.status==='exact'?'correct':sc.status==='result'?'result':sc.status==='wrong'?'wrong':'';
       let scoreLabel=pick.h+'–'+pick.a;
       if(pick.type==='et') scoreLabel+=' (T.E.)';
       if(pick.type==='pen') scoreLabel+=' (pen. '+pick.penH+'-'+pick.penA+')';
-      roundHtml+='<div class="mpill '+cls+'"><span>'+teams.home.flag+' '+teams.home.name+' v '+teams.away.name+' '+teams.away.flag+'</span><span class="mscore">'+scoreLabel+'</span></div>';
+      let ptsLabel='';
+      if(sc.status!=='pending') ptsLabel=' +'+sc.pts+'pts'+(sc.pts>3||sc.pts>1&&sc.status==='result'?' 🎯':'');
+      roundHtml+='<div class="mpill '+cls+'"><span>'+teams.home.flag+' '+teams.home.name+' v '+teams.away.name+' '+teams.away.flag+'</span><span class="mscore">'+scoreLabel+(ptsLabel?'<em style="font-size:10px;margin-left:3px;opacity:.7">'+ptsLabel+'</em>':'')+'</span></div>';
     });
     if(roundHtml){
       out+='<div class="lb-round-label">'+round.label+'</div><div class="matches-grid">'+roundHtml+'</div>';
@@ -1107,9 +1117,11 @@ function renderBracketAdvance(id){
   if(pick.type==='pen') suffix=' (en penales '+pick.penH+'-'+pick.penA+')';
   adv.style.display='block';
   if(m.real){
-    const st=bracketScoreResult(m,pick);
-    if(st==='exact'){ adv.textContent='✓✓ Avanza: '+winnerName+suffix+' — ¡marcador exacto! (+3 pts)'; adv.style.color='#14532d'; adv.style.background='rgba(20,83,45,.1)'; }
-    else if(st==='result'){ adv.textContent='✓ Avanza: '+winnerName+suffix+' — acertaste quién pasa (+1 pt)'; adv.style.color='#8a6d1a'; adv.style.background='rgba(200,168,75,.12)'; }
+    const sc=bracketScoreResult(m,pick);
+    const typeMatch=pick.type&&m.real.type&&pick.type===m.real.type;
+    const typeBonusText=typeMatch?' +🎯 bono tipo':'';
+    if(sc.status==='exact'){ adv.textContent='✓✓ Avanza: '+winnerName+suffix+' — ¡exacto! (+'+sc.pts+' pts'+typeBonusText+')'; adv.style.color='#14532d'; adv.style.background='rgba(20,83,45,.1)'; }
+    else if(sc.status==='result'){ adv.textContent='✓ Avanza: '+winnerName+suffix+' — quién pasa (+'+sc.pts+' pt'+typeBonusText+')'; adv.style.color='#8a6d1a'; adv.style.background='rgba(200,168,75,.12)'; }
     else { adv.textContent='✗ Avanza: '+winnerName+suffix+' — no acertaste'; adv.style.color='#9b1c1c'; adv.style.background='rgba(155,28,28,.08)'; }
   } else {
     adv.textContent='Avanza: '+winnerName+suffix;
