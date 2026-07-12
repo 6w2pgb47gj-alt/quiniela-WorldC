@@ -338,35 +338,31 @@ const BRACKET_R16=[
 ];
 
 // ── OCTAVOS DE FINAL ────────────────────────────────────────────────────────────
-// Cada cruce toma el ganador de 2 partidos consecutivos de dieciseisavos (orden fijo FIFA).
 const BRACKET_R8=[
-  {id:'r8_1', from:['r16_1','r16_4'],  date:'Sáb 4 jul', time:'11:00', venue:'Houston',         real:{h:0, a:3, type:'normal'}},
-  {id:'r8_2', from:['r16_3','r16_6'],  date:'Sáb 4 jul', time:'15:00', venue:'Filadelfia',      real:{h:0, a:1, type:'normal'}},
-  {id:'r8_3', from:['r16_2','r16_5'],  date:'Dom 5 jul', time:'15:00', venue:'Nueva Jersey',    real:{h:1, a:2, type:'normal'}},
-  {id:'r8_4', from:['r16_7','r16_8'],  date:'Dom 5 jul', time:'19:00', venue:'Ciudad de México', real:{h:2, a:3, type:'normal'}},
-  {id:'r8_5', from:['r16_12','r16_11'],date:'Lun 6 jul', time:'13:00', venue:'Arlington',       real:{h:0, a:1, type:'normal'}},
-  {id:'r8_6', from:['r16_10','r16_9'], date:'Lun 6 jul', time:'19:00', venue:'Seattle',         real:{h:1, a:4, type:'normal'}},
-  {id:'r8_7', from:['r16_15','r16_14'],date:'Mar 7 jul', time:'10:00', venue:'Atlanta',         real:{h:3, a:2, type:'normal'}},
-  {id:'r8_8', from:['r16_13','r16_16'],date:'Mar 7 jul', time:'14:00', venue:'Vancouver',       real:{h:0, a:0, type:'pen', penH:4, penA:3}}
+  {id:'r8_1', from:['r16_1','r16_4'],  date:'Sáb 4 jul', time:'11:00', venue:'Houston',          real:{h:0, a:3, type:'normal'}},
+  {id:'r8_2', from:['r16_3','r16_6'],  date:'Sáb 4 jul', time:'14:00', venue:'Filadelfia',       real:{h:0, a:1, type:'normal'}},
+  {id:'r8_3', from:['r16_2','r16_5'],  date:'Dom 5 jul', time:'14:00', venue:'Nueva Jersey',     real:{h:1, a:2, type:'normal'}},
+  {id:'r8_4', from:['r16_7','r16_8'],  date:'Dom 5 jul', time:'18:00', venue:'Ciudad de México', real:{h:2, a:3, type:'normal'}},
+  {id:'r8_5', from:['r16_12','r16_11'],date:'Lun 6 jul', time:'13:00', venue:'Arlington',        real:{h:0, a:1, type:'normal'}},
+  {id:'r8_6', from:['r16_10','r16_9'], date:'Lun 6 jul', time:'18:00', venue:'Seattle',          real:{h:1, a:4, type:'normal'}},
+  {id:'r8_7', from:['r16_15','r16_14'],date:'Mar 7 jul', time:'10:00', venue:'Atlanta',          real:{h:3, a:2, type:'normal'}},
+  {id:'r8_8', from:['r16_13','r16_16'],date:'Mar 7 jul', time:'13:00', venue:'Vancouver',        real:{h:0, a:0, type:'pen', penH:4, penA:3}}
 ];
-
 // ── CUARTOS DE FINAL ─────────────────────────────────────────────────────────────
 const BRACKET_QF=[
-  {id:'qf_1', from:['r8_1','r8_2'], date:'Jue 9 jul',  time:'13:00', venue:'Boston',      real:{h:2, a:0, type:'normal'}},
-  {id:'qf_2', from:['r8_3','r8_4'], date:'Vie 10 jul', time:'13:00', venue:'Miami',       real:{h:1, a:2, type:'normal'}},
-  {id:'qf_3', from:['r8_5','r8_6'], date:'Sáb 11 jul', time:'11:00', venue:'Kansas City', real:{h:2, a:1, type:'normal'}},
-  {id:'qf_4', from:['r8_7','r8_8'], date:'Sáb 11 jul', time:'15:00', venue:'Dallas',      real:{h:3, a:1, type:'et'}}
+  {id:'qf_1', from:['r8_1','r8_2'], date:'Jue 9 jul',  time:'15:00', venue:'Boston',       real:{h:2, a:0, type:'normal'}},
+  {id:'qf_2', from:['r8_3','r8_4'], date:'Vie 10 jul', time:'14:00', venue:'Los Ángeles',  real:{h:1, a:2, type:'et'}},
+  {id:'qf_3', from:['r8_5','r8_6'], date:'Sáb 11 jul', time:'16:00', venue:'Miami',        real:{h:2, a:1, type:'normal'}},
+  {id:'qf_4', from:['r8_7','r8_8'], date:'Sáb 11 jul', time:'19:00', venue:'Kansas City',  real:{h:3, a:1, type:'et'}}
 ];
-
 // ── SEMIFINALES ──────────────────────────────────────────────────────────────────
 const BRACKET_SF=[
-  {id:'sf_1', from:['qf_1','qf_2'], date:'Mar 14 jul', time:'13:00', venue:'Dallas',  real:null},
-  {id:'sf_2', from:['qf_3','qf_4'], date:'Mié 15 jul', time:'13:00', venue:'Atlanta', real:null}
+  {id:'sf_1', from:['qf_1','qf_2'], date:'Mar 14 jul', time:'14:00', venue:'Arlington',  real:null},
+  {id:'sf_2', from:['qf_3','qf_4'], date:'Mié 15 jul', time:'14:00', venue:'Atlanta',    real:null}
 ];
-
 // ── FINAL ────────────────────────────────────────────────────────────────────────
 const BRACKET_FINAL=[
-  {id:'final_1', from:['sf_1','sf_2'], date:'Dom 19 jul', time:'13:00', venue:'Nueva Jersey', real:null}
+  {id:'final_1', from:['sf_1','sf_2'], date:'Dom 19 jul', time:'14:00', venue:'Nueva Jersey', real:null}
 ];
 
 // Lista de todas las rondas con metadatos para renderizado genérico
