@@ -320,47 +320,47 @@ const SHEET_NAME='Quinielas';
 // Cuadro 100% confirmado. Horarios convertidos a hora de Guadalajara, Jalisco (CST/UTC-6).
 const BRACKET_R16=[
   {id:'r16_1',  home:{name:'Sudáfrica',flag:'🇿🇦'}, away:{name:'Canadá',flag:'🇨🇦'}, date:'Dom 28 jun', time:'13:00', venue:'Los Ángeles', status:'confirmed', real:{h:0, a:1, type:'normal'}},
-  {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'Lun 29 jun', time:'11:00', venue:'Houston', status:'confirmed', real:{h:3, a:1, type:'normal'}},
-  {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'Lun 29 jun', time:'14:30', venue:'Boston', status:'confirmed', real:{h:2, a:0, type:'normal'}},
+  {id:'r16_2',  home:{name:'Brasil',flag:'🇧🇷'}, away:{name:'Japón',flag:'🇯🇵'}, date:'Lun 29 jun', time:'11:00', venue:'Houston', status:'confirmed', real:{h:2, a:1, type:'normal'}},
+  {id:'r16_3',  home:{name:'Alemania',flag:'🇩🇪'}, away:{name:'Paraguay',flag:'🇵🇾'}, date:'Lun 29 jun', time:'14:30', venue:'Boston', status:'confirmed', real:{h:1, a:1, type:'pen', penH:3, penA:4}},
   {id:'r16_4',  home:{name:'Países Bajos',flag:'🇳🇱'}, away:{name:'Marruecos',flag:'🇲🇦'}, date:'Lun 29 jun', time:'19:00', venue:'Monterrey', status:'confirmed', real:{h:1, a:1, type:'pen', penH:2, penA:3}},
   {id:'r16_5',  home:{name:'Costa de Marfil',flag:'🇨🇮'}, away:{name:'Noruega',flag:'🇳🇴'}, date:'Mar 30 jun', time:'11:00', venue:'Dallas', status:'confirmed', real:{h:1, a:2, type:'normal'}},
   {id:'r16_6',  home:{name:'Francia',flag:'🇫🇷'}, away:{name:'Suecia',flag:'🇸🇪'}, date:'Mar 30 jun', time:'15:00', venue:'Nueva Jersey', status:'confirmed', real:{h:3, a:0, type:'normal'}},
   {id:'r16_7',  home:{name:'México',flag:'🇲🇽'}, away:{name:'Ecuador',flag:'🇪🇨'}, date:'Mar 30 jun', time:'19:00', venue:'Ciudad de México', status:'confirmed', real:{h:2, a:0, type:'normal'}},
   {id:'r16_8',  home:{name:'Inglaterra',flag:'🏴'}, away:{name:'R.D. Congo',flag:'🇨🇩'}, date:'Mié 1 jul', time:'10:00', venue:'Atlanta', status:'confirmed', real:{h:2, a:1, type:'normal'}},
-  {id:'r16_9',  home:{name:'Bélgica',flag:'🇧🇪'}, away:{name:'Senegal',flag:'🇸🇳'}, date:'Mié 1 jul', time:'14:00', venue:'Seattle', status:'confirmed', real:{h:3, a:2, type:'normal'}},
+  {id:'r16_9',  home:{name:'Bélgica',flag:'🇧🇪'}, away:{name:'Senegal',flag:'🇸🇳'}, date:'Mié 1 jul', time:'14:00', venue:'Seattle', status:'confirmed', real:{h:3, a:2, type:'et'}},
   {id:'r16_10', home:{name:'Estados Unidos',flag:'🇺🇸'}, away:{name:'Bosnia y Herz.',flag:'🇧🇦'}, date:'Mié 1 jul', time:'18:00', venue:'Santa Clara', status:'confirmed', real:{h:2, a:0, type:'normal'}},
   {id:'r16_11', home:{name:'España',flag:'🇪🇸'}, away:{name:'Austria',flag:'🇦🇹'}, date:'Jue 2 jul', time:'13:00', venue:'Los Ángeles', status:'confirmed', real:{h:3, a:0, type:'normal'}},
   {id:'r16_12', home:{name:'Portugal',flag:'🇵🇹'}, away:{name:'Croacia',flag:'🇭🇷'}, date:'Jue 2 jul', time:'17:00', venue:'Toronto', status:'confirmed', real:{h:2, a:1, type:'normal'}},
   {id:'r16_13', home:{name:'Suiza',flag:'🇨🇭'}, away:{name:'Argelia',flag:'🇩🇿'}, date:'Jue 2 jul', time:'21:00', venue:'Vancouver', status:'confirmed', real:{h:2, a:0, type:'normal'}},
-  {id:'r16_14', home:{name:'Australia',flag:'🇦🇺'}, away:{name:'Egipto',flag:'🇪🇬'}, date:'Vie 3 jul', time:'12:00', venue:'Dallas', status:'confirmed', real:{h:1, a:1, type:'pen', penH:3, penA:4}},
-  {id:'r16_15', home:{name:'Argentina',flag:'🇦🇷'}, away:{name:'Cabo Verde',flag:'🇨🇻'}, date:'Vie 3 jul', time:'16:00', venue:'Miami', status:'confirmed', real:{h:3, a:2, type:'te'}},
+  {id:'r16_14', home:{name:'Australia',flag:'🇦🇺'}, away:{name:'Egipto',flag:'🇪🇬'}, date:'Vie 3 jul', time:'12:00', venue:'Dallas', status:'confirmed', real:{h:1, a:1, type:'pen', penH:2, penA:4}},
+  {id:'r16_15', home:{name:'Argentina',flag:'🇦🇷'}, away:{name:'Cabo Verde',flag:'🇨🇻'}, date:'Vie 3 jul', time:'16:00', venue:'Miami', status:'confirmed', real:{h:3, a:2, type:'et'}},
   {id:'r16_16', home:{name:'Colombia',flag:'🇨🇴'}, away:{name:'Ghana',flag:'🇬🇭'}, date:'Vie 3 jul', time:'19:30', venue:'Kansas City', status:'confirmed', real:{h:1, a:0, type:'normal'}}
 ];
 
 // ── OCTAVOS DE FINAL ────────────────────────────────────────────────────────────
 // Cada cruce toma el ganador de 2 partidos consecutivos de dieciseisavos (orden fijo FIFA).
 const BRACKET_R8=[
-  {id:'r8_1', from:['r16_1','r16_4'],  date:'Sáb 4 jul', time:'11:00', venue:'Houston', real:null},
-  {id:'r8_2', from:['r16_3','r16_6'],  date:'Sáb 4 jul', time:'15:00', venue:'Filadelfia', real:null},
-  {id:'r8_3', from:['r16_2','r16_5'],  date:'Dom 5 jul', time:'15:00', venue:'Nueva Jersey', real:null},
-  {id:'r8_4', from:['r16_7','r16_8'],  date:'Dom 5 jul', time:'19:00', venue:'Ciudad de México', real:null},
-  {id:'r8_5', from:['r16_12','r16_11'],date:'Lun 6 jul', time:'13:00', venue:'Arlington', real:null},
-  {id:'r8_6', from:['r16_10','r16_9'], date:'Lun 6 jul', time:'19:00', venue:'Seattle', real:null},
-  {id:'r8_7', from:['r16_15','r16_14'],date:'Mar 7 jul', time:'10:00', venue:'Atlanta', real:null},
-  {id:'r8_8', from:['r16_13','r16_16'],date:'Mar 7 jul', time:'14:00', venue:'Vancouver', real:null}
+  {id:'r8_1', from:['r16_1','r16_4'],  date:'Sáb 4 jul', time:'11:00', venue:'Houston',         real:{h:0, a:3, type:'normal'}},
+  {id:'r8_2', from:['r16_3','r16_6'],  date:'Sáb 4 jul', time:'15:00', venue:'Filadelfia',      real:{h:0, a:1, type:'normal'}},
+  {id:'r8_3', from:['r16_2','r16_5'],  date:'Dom 5 jul', time:'15:00', venue:'Nueva Jersey',    real:{h:1, a:2, type:'normal'}},
+  {id:'r8_4', from:['r16_7','r16_8'],  date:'Dom 5 jul', time:'19:00', venue:'Ciudad de México', real:{h:2, a:3, type:'normal'}},
+  {id:'r8_5', from:['r16_12','r16_11'],date:'Lun 6 jul', time:'13:00', venue:'Arlington',       real:{h:0, a:1, type:'normal'}},
+  {id:'r8_6', from:['r16_10','r16_9'], date:'Lun 6 jul', time:'19:00', venue:'Seattle',         real:{h:1, a:4, type:'normal'}},
+  {id:'r8_7', from:['r16_15','r16_14'],date:'Mar 7 jul', time:'10:00', venue:'Atlanta',         real:{h:3, a:2, type:'normal'}},
+  {id:'r8_8', from:['r16_13','r16_16'],date:'Mar 7 jul', time:'14:00', venue:'Vancouver',       real:{h:0, a:0, type:'pen', penH:4, penA:3}}
 ];
 
 // ── CUARTOS DE FINAL ─────────────────────────────────────────────────────────────
 const BRACKET_QF=[
-  {id:'qf_1', from:['r8_1','r8_2'], date:'Jue 9 jul', time:'13:00', venue:'Boston', real:null},
-  {id:'qf_2', from:['r8_3','r8_4'], date:'Vie 10 jul', time:'13:00', venue:'Miami', real:null},
-  {id:'qf_3', from:['r8_5','r8_6'], date:'Sáb 11 jul', time:'11:00', venue:'Kansas City', real:null},
-  {id:'qf_4', from:['r8_7','r8_8'], date:'Sáb 11 jul', time:'15:00', venue:'Dallas', real:null}
+  {id:'qf_1', from:['r8_1','r8_2'], date:'Jue 9 jul',  time:'13:00', venue:'Boston',      real:{h:2, a:0, type:'normal'}},
+  {id:'qf_2', from:['r8_3','r8_4'], date:'Vie 10 jul', time:'13:00', venue:'Miami',       real:{h:1, a:2, type:'normal'}},
+  {id:'qf_3', from:['r8_5','r8_6'], date:'Sáb 11 jul', time:'11:00', venue:'Kansas City', real:{h:2, a:1, type:'normal'}},
+  {id:'qf_4', from:['r8_7','r8_8'], date:'Sáb 11 jul', time:'15:00', venue:'Dallas',      real:{h:3, a:1, type:'et'}}
 ];
 
 // ── SEMIFINALES ──────────────────────────────────────────────────────────────────
 const BRACKET_SF=[
-  {id:'sf_1', from:['qf_1','qf_2'], date:'Mar 14 jul', time:'13:00', venue:'Dallas', real:null},
+  {id:'sf_1', from:['qf_1','qf_2'], date:'Mar 14 jul', time:'13:00', venue:'Dallas',  real:null},
   {id:'sf_2', from:['qf_3','qf_4'], date:'Mié 15 jul', time:'13:00', venue:'Atlanta', real:null}
 ];
 
